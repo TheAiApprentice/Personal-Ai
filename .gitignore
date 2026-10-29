@@ -1,0 +1,14 @@
+# Runtime data (memory database, mailbox) is created on first use and never shipped
+data/
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+# Python caches
+__pycache__/
+*.pyc
+.pytest_cache/
+# Backup files
+*.bak
+# The guard's default protected-file folder
+private/

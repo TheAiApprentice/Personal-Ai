@@ -15,4 +15,4 @@ Run everything:
 
     python -m pytest -q -p no:cacheprovider tools
 
-Expected: `280 passed`.
+Expected: pytest reports 280 passed on Windows; on Mac and Linux it reports 261 passed and 19 skipped (Windows-only path tests).

@@ -5,7 +5,7 @@
 Everything here is real and in daily use. It was cleaned of private data before it went up, and a privacy scan checks the whole folder.
 
 - **28 skills**, each with a `SKILL.md` and a machine-readable `manifest.json`, in [`skills/`](skills/)
-- **5 tools with 280 passing tests**, in [`tools/`](tools/): a guard hook, a memory system, a health check, a GPU-time mailbox and a privacy scan
+- **5 tools with 280 tests (19 of them run on Windows only)**, in [`tools/`](tools/): a guard hook, a memory system, a health check, a GPU-time mailbox and a privacy scan
 - **Standard library Python plus pytest.** No accounts, no keys, no network needed to run the tests
 
 ---
@@ -57,8 +57,7 @@ Python 3.11 or newer, and pytest. Windows is the main target.
     python -m pytest -q -p no:cacheprovider tools
     python tools/health/check.py
 
-Expected: the scan passes with 0 findings, pytest reports **280 passed on Windows; on Mac and Linux the Windows-only
-path tests are skipped** (201 guard, 39 privacy scan, 34 GPU mailbox, 3 memory, 3 health check), and the health check
+Expected: the scan passes with 0 findings, pytest reports **280 passed on Windows; on Mac and Linux it reports 261 passed and 19 skipped (Windows-only path tests)** (201 guard, 39 privacy scan, 34 GPU mailbox, 3 memory, 3 health check), and the health check
 ends in `ALL OK`. Every default path points inside this folder.
 Runtime data (the memory database, the mailbox) goes under `data/`, which is in `.gitignore` and never shipped.
 
