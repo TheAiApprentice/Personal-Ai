@@ -1,0 +1,56 @@
+{
+  "id": "character-from-2d-art",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/character-from-2d-art/SKILL.md",
+  "purpose": "Build a stylized 3D character that matches picked 2D art: clean but not plastic materials, real five-finger hands with grips, natural prop carry, one-number face control, rig, and a side-by-side likeness loop before anything goes to the owner.",
+  "triggers": [
+    "build a character",
+    "3D character from art",
+    "model the teacher character",
+    "fix the hands",
+    "doesn't look like the art",
+    "inhabitant"
+  ],
+  "agent_classes": [
+    "internal-permanent"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": false,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "user",
+    "project",
+    "experience"
+  ],
+  "model": {
+    "tier": "opus",
+    "notes": "modelling and likeness judgement; run by a builder agent inside a blender-recorded-build."
+  },
+  "subagents": {
+    "allowed": true
+  },
+  "cost_flags": [
+    "gpu time (gpu-time grant)"
+  ],
+  "owner_approval": [
+    "GPU use only under a current gpu-time grant",
+    "how a prop is carried, when the art does not show it, is asked through the main seat"
+  ],
+  "evaluation": "The likeness comparison shows the art above front, three-quarter and profile renders with an honest score of 8 or more out of 10; the hand clash check reports 0 finger vertices through held props; every walk clip passes the walk check; the face is driven by one control.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-23",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Blender 5.0 Python modules; no downloaded assets.",
+  "status": "active",
+  "updated": "2026-10-23"
+}

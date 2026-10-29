@@ -1,0 +1,47 @@
+{
+  "id": "second-opinion",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/second-opinion/SKILL.md",
+  "purpose": "Independent review of another model's work so nothing grades itself (brief section 11).",
+  "triggers": [
+    "second opinion",
+    "check the other model's work",
+    "is this right"
+  ],
+  "agent_classes": [
+    "user-facing"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": false,
+    "network": false,
+    "runs_code": true,
+    "chat_send": true,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "project"
+  ],
+  "model": {
+    "tier": "main",
+    "notes": "must differ from the maker"
+  },
+  "subagents": {
+    "allowed": true,
+    "max": 2
+  },
+  "cost_flags": [],
+  "owner_approval": [],
+  "evaluation": "Refuses to review its own work; every disagreement quotes the artifact.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-01",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Prompt only; on the box the judge model is chosen to differ from the writer.",
+  "status": "active",
+  "updated": "2026-10-01"
+}

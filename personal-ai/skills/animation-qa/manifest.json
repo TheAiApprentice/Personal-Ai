@@ -1,0 +1,54 @@
+{
+  "id": "animation-qa",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/animation-qa/SKILL.md",
+  "purpose": "Check Blender animation before the owner sees it: clean-walk check, camera smoothness plot, ray-block and too-close checks, hand and prop clash checks, and every frame reviewed on contact sheets by eye.",
+  "triggers": [
+    "check the walk",
+    "check the camera",
+    "review every frame",
+    "before sending a preview",
+    "robotic walk",
+    "jumpy camera"
+  ],
+  "agent_classes": [
+    "internal-permanent"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": false,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "project",
+    "experience"
+  ],
+  "model": {
+    "tier": "sonnet",
+    "notes": "running checks is mechanical; looking at the review sheets needs a model that reads images."
+  },
+  "subagents": {
+    "allowed": true
+  },
+  "cost_flags": [
+    "gpu time for the every-frame review renders (gpu-time grant)"
+  ],
+  "owner_approval": [
+    "GPU renders only under a current gpu-time grant"
+  ],
+  "evaluation": "The walk summary shows pass=True for every clip; the camera report has an empty too_close list and only intended blocked runs; the motion plot has no unexplained spikes; every review sheet was opened and its faults listed before the preview went out.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-23",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Blender Python checks plus Pillow scripts; rig and bone names change per character, thresholds stay.",
+  "status": "active",
+  "updated": "2026-10-23"
+}

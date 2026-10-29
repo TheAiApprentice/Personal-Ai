@@ -1,0 +1,51 @@
+{
+  "id": "topic-research",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/topic-research/SKILL.md",
+  "purpose": "Keep the living topic list growing: read-only web research for fields where doing the job with AI is a good skill, scored 0-10 for the channel, good finds (5+) added as ideas through topics.py.",
+  "triggers": [
+    "topics",
+    "topic list",
+    "research topics",
+    "find new topics",
+    "weekly check"
+  ],
+  "agent_classes": [
+    "internal-permanent"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": true,
+    "runs_code": true,
+    "chat_send": true,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "user",
+    "project"
+  ],
+  "model": {
+    "tier": "sonnet",
+    "notes": "web search and scoring need a model; run by a research agent with read-only tools (Read, Grep, Glob, Bash, WebSearch, WebFetch). The chat note to the owner is sent by the main session, not the agent."
+  },
+  "subagents": {
+    "allowed": true
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "scheduling a weekly task (the owner sets it up)"
+  ],
+  "evaluation": "topics.py due exits 0 after 7 days or never, else 1; a --dry-run research run prints candidates (URLs, score, why, verified) and leaves the topic files and state file unchanged; a real run adds only score 5+ finds, never a duplicate, then render and mark-run.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-21",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "topics.py is Python stdlib only; the research step needs any model with web search.",
+  "status": "active",
+  "updated": "2026-10-21"
+}

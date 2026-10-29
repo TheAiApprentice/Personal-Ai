@@ -1,0 +1,49 @@
+{
+  "id": "morning-brief",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/morning-brief/SKILL.md",
+  "purpose": "One short chat message each morning from memory, ledger, hardware hits and model-list date.",
+  "triggers": [
+    "morning brief",
+    "catch me up",
+    "scheduled run"
+  ],
+  "agent_classes": [
+    "internal-permanent"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": false,
+    "network": false,
+    "runs_code": true,
+    "chat_send": true,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "user",
+    "project"
+  ],
+  "model": {
+    "tier": "none",
+    "notes": "no model needed; pure data"
+  },
+  "subagents": {
+    "allowed": false
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "scheduling it (the owner sets up the task)"
+  ],
+  "evaluation": "Under 1,900 characters; every line traceable to memory, ledger or watch data.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-01",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Runs without any model; same command on the box.",
+  "status": "active",
+  "updated": "2026-10-01"
+}

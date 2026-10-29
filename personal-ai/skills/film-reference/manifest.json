@@ -1,0 +1,51 @@
+{
+  "id": "film-reference",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/film-reference/SKILL.md",
+  "purpose": "Study real film shots for a scene the owner describes and turn them into a numeric shot recipe (keyframes, heights, lenses, easing, density, light, walk timing) for a Blender build; private study only, nothing copied.",
+  "triggers": [
+    "get inspiration from movies",
+    "like a disney movie",
+    "like brave",
+    "film reference",
+    "shot recipe"
+  ],
+  "agent_classes": [
+    "internal-permanent"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": true,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "user",
+    "project"
+  ],
+  "model": {
+    "tier": "sonnet",
+    "notes": "web search and reading stills; turning them into numbers can use opus for a big scene."
+  },
+  "subagents": {
+    "allowed": true
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "nothing from a film is ever published or used in our video; stills stay private study"
+  ],
+  "evaluation": "reference/FILM_REFERENCE.md lists each reference with where, camera, light, what works and the take, then a recipe with per-beat keyframe numbers, density, light and walk timing; no dialogue quoted; stills only in reference/stills.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-23",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Web search plus the youtube skill's yt_fetch.py; any model that reads images.",
+  "status": "active",
+  "updated": "2026-10-23"
+}

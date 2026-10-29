@@ -1,0 +1,54 @@
+{
+  "id": "factory",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/factory/SKILL.md",
+  "purpose": "Run any multi-step job: main session orchestrates, helpers spec, build, review in parallel (2 fix rounds max), approver finishes or escalates to the owner.",
+  "triggers": [
+    "any multi-step job or build",
+    "handing work to a seat",
+    "factory"
+  ],
+  "agent_classes": [
+    "user-facing"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": false,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "user",
+    "project"
+  ],
+  "model": {
+    "tier": "main",
+    "notes": "suggestion, not a rule: spec writer and approver on the larger model, builder and reviewers on the mid-size or small model (set in the agent files)"
+  },
+  "subagents": {
+    "allowed": true,
+    "max": 5,
+    "use": "factory-spec, factory-builder (or the seat's agent), up to 3 parallel factory-reviewer, factory-approver"
+  },
+  "cost_flags": [
+    "helper loops use more tokens than one session"
+  ],
+  "owner_approval": [
+    "anything outward-facing (sending, publishing, spending, admin installs, sign-ins, servers, scheduled tasks, GPUs) always escalates to the owner",
+    "only the owner closes an escalated job"
+  ],
+  "evaluation": "Each job is a board item that moves spec -> build -> review -> approved or escalated; reviews are PASS/FAIL with fixes; the board refuses a third fix round.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-10",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Plain markdown agents and the board CLI; on the box any local model can fill each role.",
+  "status": "active",
+  "updated": "2026-10-10"
+}

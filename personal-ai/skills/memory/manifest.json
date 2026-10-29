@@ -1,0 +1,52 @@
+{
+  "id": "memory",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/memory/SKILL.md",
+  "purpose": "Long-term memory: owner facts, projects with intent chains, lessons, append-only chat archive.",
+  "triggers": [
+    "session start",
+    "remember",
+    "forget",
+    "what do you remember"
+  ],
+  "agent_classes": [
+    "internal-permanent"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": false,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "user",
+    "project",
+    "experience",
+    "knowledge",
+    "archive"
+  ],
+  "model": {
+    "tier": "fast"
+  },
+  "subagents": {
+    "allowed": false
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "purge (real deletion) needs the owner's words recorded"
+  ],
+  "evaluation": "Round-trip add/search/brief on a throwaway DB; archive and audit refuse edits and deletes.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-09-30",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "SQLite shaped like the planned PostgreSQL + pgvector schema; `mem.py export` gives JSONL for the move.",
+  "status": "active",
+  "updated": "2026-10-01"
+}

@@ -1,0 +1,48 @@
+{
+  "id": "skill-importer",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/skill-importer/SKILL.md",
+  "purpose": "Skill pack in, installed and reported: safe unzip, risk and project-tie flags, strip ties, place in the right seat, manifest, report.",
+  "triggers": [
+    "add these skills",
+    "install this skill",
+    "examine and add"
+  ],
+  "agent_classes": [
+    "user-facing"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": false,
+    "runs_code": true,
+    "chat_send": true,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "project"
+  ],
+  "model": {
+    "tier": "main"
+  },
+  "subagents": {
+    "allowed": false
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "any pack with a RISK flag is reported to the owner before install",
+    "never runs code from a pack"
+  ],
+  "evaluation": "Importer tests cover safe unzip, risk and tie flags, seat and global install, and no overwrite; a test pack with project ties gets them flagged.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-02",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Plain Python standard library; model-agnostic steps.",
+  "status": "active",
+  "updated": "2026-10-02"
+}

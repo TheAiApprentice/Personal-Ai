@@ -1,0 +1,49 @@
+{
+  "id": "gpu-time",
+  "version": "1.1.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/gpu-time/SKILL.md",
+  "purpose": "Ask the host system that owns the GPUs for GPU time and talk with it about that time through one signed mailbox: request, ack, you're clear with X, 5-minute warning, owner order, release.",
+  "triggers": [
+    "use the GPUs",
+    "GPU time",
+    "book the GPUs",
+    "after a restart, do I hold GPU time"
+  ],
+  "agent_classes": [
+    "user-facing"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": false,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "project"
+  ],
+  "model": {
+    "tier": "main"
+  },
+  "subagents": {
+    "allowed": false
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "creating the mailbox (gpu_time.py init) is an install step the owner approves",
+    "any action on the host system outside the mailbox (this skill only asks for time and answers)"
+  ],
+  "evaluation": "tools/gpu_mailbox/test_gpu_time.py: temp-dir mailbox; request -> ack -> grant -> check -> release, signature and append-only checks, forged and stale grants refused, minutes bounds.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-03",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Standard-library Python; the mailbox is plain signed JSON files any future host can read.",
+  "status": "active",
+  "updated": "2026-10-03"
+}

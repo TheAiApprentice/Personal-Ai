@@ -1,0 +1,48 @@
+{
+  "id": "wipe",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/wipe/SKILL.md",
+  "purpose": "The assistant's delete tool: anything the owner says to delete/remove/get rid of goes to the Windows Recycle Bin (recoverable), with gates and a proof it is in the bin.",
+  "triggers": [
+    "delete",
+    "remove",
+    "wipe",
+    "get rid of",
+    "trash"
+  ],
+  "agent_classes": [
+    "user-facing"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": false,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [],
+  "model": {
+    "tier": "main"
+  },
+  "subagents": {
+    "allowed": false
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "never a permanent delete or emptying the bin (the owner's call)",
+    "never anything under a folder named in WIPE_PROTECTED"
+  ],
+  "evaluation": "recycle.py dry run refuses wildcards and protected paths; --execute ends RECYCLE CLEAN only when every path is gone from disk and listed in the Recycle Bin.",
+  "provenance": {
+    "source": "adapted from an earlier skill; reworked here",
+    "added_on": "2026-10-10",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "adapted"
+  },
+  "portability": "Windows-only (Recycle Bin via PowerShell Microsoft.VisualBasic); on Linux swap the mover for a trash-spec (gio trash) call.",
+  "status": "active",
+  "updated": "2026-10-10"
+}

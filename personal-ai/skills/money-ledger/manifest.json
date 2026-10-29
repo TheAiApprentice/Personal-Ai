@@ -1,0 +1,48 @@
+{
+  "id": "money-ledger",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/money-ledger/SKILL.md",
+  "purpose": "Append-only scoreboard of money in, money out, hours and tokens per project (brief section 16).",
+  "triggers": [
+    "cost",
+    "sale",
+    "scoreboard",
+    "are we making money"
+  ],
+  "agent_classes": [
+    "internal-permanent"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": false,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "project"
+  ],
+  "model": {
+    "tier": "fast"
+  },
+  "subagents": {
+    "allowed": false
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "only numbers the owner gave or real receipts are logged"
+  ],
+  "evaluation": "Database refuses update/delete; report totals match entries; corrections are new entries.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-01",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "SQLite; moves to the protected Postgres ledger on the box.",
+  "status": "active",
+  "updated": "2026-10-01"
+}

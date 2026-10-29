@@ -1,0 +1,49 @@
+{
+  "id": "dm-answer",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/dm-answer/SKILL.md",
+  "purpose": "Get the chat watch going in the background and answer the owner's waiting messages.",
+  "triggers": [
+    "DM answer",
+    "get the watch going",
+    "after a session restart"
+  ],
+  "agent_classes": [
+    "user-facing"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": true,
+    "runs_code": true,
+    "chat_send": true,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "user"
+  ],
+  "model": {
+    "tier": "main"
+  },
+  "subagents": {
+    "allowed": false,
+    "max": 0,
+    "use": "none"
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "only one watch at a time; never stops a watch it didn't start"
+  ],
+  "evaluation": "Exactly one watch is running and every message listed as unanswered got a reply.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-10",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Wraps the messaging skill's scripts; runs the same on the box.",
+  "status": "active",
+  "updated": "2026-10-10"
+}

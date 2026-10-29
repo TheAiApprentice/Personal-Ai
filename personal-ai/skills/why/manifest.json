@@ -1,0 +1,49 @@
+{
+  "id": "why",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/why/SKILL.md",
+  "purpose": "Answer why something was decided from memory: what, when, who (the owner or me), what replaced it. Says no record when memory has nothing.",
+  "triggers": [
+    "why did we",
+    "why did you",
+    "why is X like that",
+    "why"
+  ],
+  "agent_classes": [
+    "user-facing"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": false,
+    "network": false,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "user",
+    "project"
+  ],
+  "model": {
+    "tier": "main"
+  },
+  "subagents": {
+    "allowed": false,
+    "max": 0,
+    "use": "none"
+  },
+  "cost_flags": [],
+  "owner_approval": [],
+  "evaluation": "A why question on a saved decision gets its date, who decided and what replaced it; a topic with no memory gets 'no record'.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-10",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Plain files and the memory CLI; runs the same on the box.",
+  "status": "active",
+  "updated": "2026-10-10"
+}

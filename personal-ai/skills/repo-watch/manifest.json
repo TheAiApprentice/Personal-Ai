@@ -1,0 +1,49 @@
+{
+  "id": "repo-watch",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/repo-watch/SKILL.md",
+  "purpose": "Weekly check of the public GitHub repos the owner said to watch: changes, crash and security items, Windows builds, course fit.",
+  "triggers": [
+    "repos",
+    "watch the repos",
+    "weekly check up on the repos"
+  ],
+  "agent_classes": [
+    "internal-permanent"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": true,
+    "runs_code": true,
+    "chat_send": true,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "user",
+    "project"
+  ],
+  "model": {
+    "tier": "none",
+    "notes": "no model needed for the check; the plain-words report is written by the session"
+  },
+  "subagents": {
+    "allowed": false
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "scheduling a weekly task (the owner sets it up)"
+  ],
+  "evaluation": "check prints a per-repo diff against the last snapshot and saves its state file; due exits 0 after 7 days else 1; status prints the last summary; no credential is read or stored.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-18",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Python stdlib only; same command on the box.",
+  "status": "active",
+  "updated": "2026-10-18"
+}

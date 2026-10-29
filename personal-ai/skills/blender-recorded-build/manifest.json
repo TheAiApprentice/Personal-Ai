@@ -1,0 +1,56 @@
+{
+  "id": "blender-recorded-build",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/blender-recorded-build/SKILL.md",
+  "purpose": "How every Blender build runs when the build is also a teaching video: one Blender window kept open, every pass a recorded round (ask, first result, tweak, second result) in rounds/plan.md, the owner's feedback as new rounds, OCR privacy scan, GPU only under a grant, recording until the owner approves.",
+  "triggers": [
+    "build an asset",
+    "blender build",
+    "resume a build",
+    "re-record",
+    "new round",
+    "feedback on a blender build"
+  ],
+  "agent_classes": [
+    "internal-permanent"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": false,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "user",
+    "project",
+    "experience"
+  ],
+  "model": {
+    "tier": "opus",
+    "notes": "big builds and visual judgement; run by a dedicated builder agent. The main seat relays reports to the owner."
+  },
+  "subagents": {
+    "allowed": true
+  },
+  "cost_flags": [
+    "gpu time (gpu-time grant)"
+  ],
+  "owner_approval": [
+    "GPU use only under a current gpu-time grant or the owner's own override",
+    "no downloads, installs, sign-ins or servers without the owner's OK (installed tools may be used for a job he gave)"
+  ],
+  "evaluation": "A round recorded with the recorder prints SESSION OK and writes session.json with ask/first_result/tweak/second_result; the OCR check reports 0 banned hits on every recording folder; engine exports print CHECK PASS from the export check; the window was never closed between rounds.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-23",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Python plus Blender 5.0; the recorder is plain Python and Blender's own API; OCR uses Windows' built-in engine.",
+  "status": "active",
+  "updated": "2026-10-23"
+}

@@ -1,0 +1,54 @@
+{
+  "id": "guild-short",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/guild-short/SKILL.md",
+  "purpose": "Make a channel Short the one approved way: vertical lesson-video style, the teacher's art grounded, the lantern mascot with the real site flame, big text, captions, the locked teacher voice, built with the vertical renderer and checked as motion.",
+  "triggers": [
+    "guild short",
+    "weekly short",
+    "invite shorts",
+    "new short",
+    "make a short"
+  ],
+  "agent_classes": [
+    "internal-permanent"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": false,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "user",
+    "project"
+  ],
+  "model": {
+    "tier": "sonnet",
+    "notes": "a fixed weekly recipe once approved."
+  },
+  "subagents": {
+    "allowed": true
+  },
+  "cost_flags": [
+    "gpu time for voice and render (gpu-time grant)"
+  ],
+  "owner_approval": [
+    "GPU time via a gpu-time grant or the owner's own go",
+    "posting is the owner's"
+  ],
+  "evaluation": "Voice repeat test matches the locked hashes; the QA script passes; 4 fps sheets looked at (no wobble, flame playing, captions in sync, -14 LUFS) before hand-off.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-23",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Python, headless browser renderer, ffmpeg; locked voice preset.",
+  "status": "active",
+  "updated": "2026-10-25"
+}

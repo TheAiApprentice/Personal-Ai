@@ -1,0 +1,47 @@
+{
+  "id": "comfy-clean",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/comfy-clean/SKILL.md",
+  "purpose": "Sends everything in an image tool's output folder to the Recycle Bin on a schedule, stopping at 90% of the bin limit.",
+  "triggers": [
+    "comfy output",
+    "clear comfy output",
+    "comfy clean"
+  ],
+  "agent_classes": [
+    "internal-permanent"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": false,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [],
+  "model": {
+    "tier": "none",
+    "notes": "no model needed"
+  },
+  "subagents": {
+    "allowed": false
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "registering the scheduled task (the owner does it himself)",
+    "never a permanent delete or emptying the bin"
+  ],
+  "evaluation": "--dry-run prints count, size and bin headroom and moves nothing; --execute sends files to the bin only, skips files under 60 minutes old, stops at 90% of the bin limit, logs one line to a log file.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-19",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Windows-only (Shell API, registry bin settings); on Linux swap the mover for gio trash.",
+  "status": "active",
+  "updated": "2026-10-19"
+}

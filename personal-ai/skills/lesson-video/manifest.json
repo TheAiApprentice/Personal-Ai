@@ -1,0 +1,54 @@
+{
+  "id": "lesson-video",
+  "version": "2.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/lesson-video/SKILL.md",
+  "purpose": "Write and build every course and YouTube video the one fixed way: about 15 min of narrated slides, the switch (\"Now watch my screen\"), build rounds (real work on the left, an animated teacher/AI chat on the right, one continuous recording per round), a skill file, the wrap, the finished work and the ONE shared end screen that every video ends with (no episode label anywhere). Voice: one locked, repeatable TTS clone preset.",
+  "triggers": [
+    "make a video",
+    "video script",
+    "lesson video",
+    "YouTube video",
+    "like the other videos"
+  ],
+  "agent_classes": [
+    "user-facing",
+    "temporary"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": true,
+    "runs_code": true,
+    "chat_send": true,
+    "spends_money": true,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "project"
+  ],
+  "model": {
+    "tier": "main",
+    "vision": "optional, to check rendered slides"
+  },
+  "subagents": {
+    "allowed": true
+  },
+  "cost_flags": [
+    "Voice is free (local clone on CPU or GPU); heavy GPU steps only when the machine is free"
+  ],
+  "owner_approval": [
+    "GPU use for voice and tool recordings",
+    "sending the finished video to the owner (main session relay); nothing is published"
+  ],
+  "evaluation": "The lesson builder's script and slides stages run with no OVERFLOW; the timeline puts the slide part at 13-16 min before the switch slide; every build-round chat line matches its real recording; master.mp4 and share.mp4 (under 9 MB) have one video and one audio stream; privacy grep clean; the last slide is the shared end screen; no caption cue overlaps a film or a sound hold; no lesson label when meta.no_label is set.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-06",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Python + ffmpeg + Playwright/Edge; a local TTS clone worker; node-tool and terminal recorders.",
+  "status": "active",
+  "updated": "2026-10-16"
+}

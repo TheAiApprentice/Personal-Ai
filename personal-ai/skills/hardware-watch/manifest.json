@@ -1,0 +1,49 @@
+{
+  "id": "hardware-watch",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/hardware-watch/SKILL.md",
+  "purpose": "Track prices for the future box against the owner's targets; flag HITs. Never buys.",
+  "triggers": [
+    "hardware watch",
+    "check GPU prices",
+    "weekly"
+  ],
+  "agent_classes": [
+    "internal-permanent"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": true,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "project"
+  ],
+  "model": {
+    "tier": "fast"
+  },
+  "subagents": {
+    "allowed": true,
+    "max": 2
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "setting a target price",
+    "any purchase (never done by the AI)"
+  ],
+  "evaluation": "Only prices seen on a page with a URL are recorded; report flags HIT correctly.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-01",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Plain Python + JSON.",
+  "status": "active",
+  "updated": "2026-10-01"
+}

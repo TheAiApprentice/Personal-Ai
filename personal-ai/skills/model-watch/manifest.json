@@ -1,0 +1,49 @@
+{
+  "id": "model-watch",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/model-watch/SKILL.md",
+  "purpose": "Keep the move-day model download list current with verified, license-checked picks.",
+  "triggers": [
+    "model watch",
+    "any new models",
+    "weekly"
+  ],
+  "agent_classes": [
+    "internal-permanent"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": true,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "project",
+    "knowledge"
+  ],
+  "model": {
+    "tier": "main"
+  },
+  "subagents": {
+    "allowed": true,
+    "max": 3
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "downloading models (move-day job)"
+  ],
+  "evaluation": "Every new or retired entry has sources, license and a reason; plan total fits 4 TB.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-01",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Becomes the brief's Research Scout / Model Registry job on the box.",
+  "status": "active",
+  "updated": "2026-10-01"
+}

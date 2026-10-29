@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{GAME} Book Ideas</title>
+<style>
+@page { size: Letter; margin: 0.6in 0.65in; }
+body { font-family: "Segoe UI", Arial, sans-serif; color: #222; font-size: 10.5pt; line-height: 1.42; background: #fff; }
+h1 { font-family: Georgia, serif; color: #7a3d0c; font-size: 22pt; margin: 0 0 4px; }
+h2 { font-family: Georgia, serif; color: #7a3d0c; font-size: 14pt; border-bottom: 2px solid #d9a441; padding-bottom: 3px; margin: 20px 0 8px; }
+.sub { color: #666; margin: 0 0 12px; }
+.box { border: 1px solid #ddd; border-left: 5px solid #2f5d4a; border-radius: 4px; padding: 10px 14px; margin: 10px 0 14px; background: #fafaf7; }
+.idea { margin: 0 0 9px; padding: 7px 10px; border: 1px solid #e6e1d6; border-radius: 4px; page-break-inside: avoid; }
+.idea h3 { font-size: 11pt; margin: 0 0 3px; color: #2f5d4a; }
+.idea p { margin: 2px 0; }
+.tag { display: inline-block; font-size: 8.5pt; font-weight: 600; padding: 1px 6px; border-radius: 3px; margin-left: 6px; vertical-align: 1px; }
+.new { background: #2f5d4a; color: #fff; }
+.adds { background: #d9a441; color: #222; }
+.size { background: #eee; color: #333; }
+.meta { color: #666; font-size: 9.5pt; }
+table { border-collapse: collapse; width: 100%; font-size: 9.5pt; }
+th, td { border: 1px solid #ddd; padding: 4px 6px; text-align: left; vertical-align: top; }
+th { background: #f3eee4; }
+</style>
+</head>
+<body>
+<h1>{GAME}: ideas from {BOOK_SHORT}</h1>
+<p class="sub">{ONE_LINE_WHAT}. {DATE}. Ideas only, nothing built.</p>
+
+<div class="box">
+<p><b>The short version.</b> {SIZE_AND_COVERAGE}. The top 5 for {GOAL}:</p>
+<p>(1) ...;<br>(2) ...;<br>(3) ...;<br>(4) ...;<br>(5) ...</p>
+<p>In total there are N ideas below: X are new (not in the game and not in any earlier idea set), and Y add something to a built system or an earlier idea.</p>
+</div>
+
+<p class="meta">How to read each idea: NEW = not in the game and not in any earlier idea set. ADDS TO = the base is already built or proposed; only what this book adds is listed. Sizes are rough. Ranked by how much each serves {GOAL}.</p>
+
+<h2>1. {GROUP}</h2>
+<div class="idea">
+<h3>1. {IDEA NAME} <span class="tag new">NEW</span> <span class="tag size">medium</span></h3>
+<p><b>In the book:</b> own words, no retelling.</p>
+<p><b>For {GAME}:</b> the feature.</p>
+</div>
+<div class="idea">
+<h3>2. {IDEA NAME} <span class="tag adds">ADDS TO {what}</span> <span class="tag size">small</span></h3>
+<p><b>In the book:</b> ...</p>
+<p><b>What the book adds:</b> only the new part.</p>
+</div>
+
+<h2>If you want an order</h2>
+<table>
+<tr><th>#</th><th>Build first</th><th>Why</th></tr>
+<tr><td>1</td><td>...</td><td>...</td></tr>
+</table>
+
+<h2>What was and wasn't checked</h2>
+<p>How much of the book was read, in how many chunks, what it was compared against, what was skipped (sexual content), and what was not re-checked (for example the game's code).</p>
+</body>
+</html>

@@ -1,0 +1,51 @@
+{
+  "id": "scout",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/scout/SKILL.md",
+  "purpose": "Video or link in, verdict out: fetch, verify claims online, grade for the owner's goals, save useful ideas.",
+  "triggers": [
+    "scout [link]",
+    "link + devil",
+    "youtube then devil",
+    "is this worth it"
+  ],
+  "agent_classes": [
+    "user-facing"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": true,
+    "runs_code": true,
+    "chat_send": true,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "knowledge",
+    "project"
+  ],
+  "model": {
+    "tier": "main"
+  },
+  "subagents": {
+    "allowed": true,
+    "max": 3,
+    "use": "online claim verification"
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "never installs or runs anything from a scouted source"
+  ],
+  "evaluation": "Every number in the verdict traced to a source or marked unverified; junk saves nothing to memory.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-01",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Uses youtube skill + web search; on the box swap web search for a local search tool.",
+  "status": "active",
+  "updated": "2026-10-01"
+}

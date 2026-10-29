@@ -1,0 +1,52 @@
+{
+  "id": "youtube",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/youtube/SKILL.md",
+  "purpose": "Fetch a YouTube video's info and transcript, and optionally the video and still frames.",
+  "triggers": [
+    "YouTube link",
+    "/youtube",
+    "watch this",
+    "get the transcript"
+  ],
+  "agent_classes": [
+    "user-facing",
+    "temporary"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": true,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "knowledge"
+  ],
+  "model": {
+    "tier": "main",
+    "vision": "only with --frames"
+  },
+  "subagents": {
+    "allowed": false
+  },
+  "cost_flags": [
+    "disk use for --video"
+  ],
+  "owner_approval": [
+    "installing or updating yt-dlp"
+  ],
+  "evaluation": "Fetch a short public video; transcript.txt non-empty; video download failure must not lose the transcript.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-09-30",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Pure Python + ffmpeg; runs the same on Ubuntu.",
+  "status": "active",
+  "updated": "2026-10-01"
+}

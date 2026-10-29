@@ -1,0 +1,48 @@
+{
+  "id": "motion",
+  "version": "1.1.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/motion/SKILL.md",
+  "purpose": "Animated lesson and YouTube videos: every slide animates in time with the narration (a motion script run by the lesson builder).",
+  "triggers": [
+    "build a lesson video",
+    "motion",
+    "animation",
+    "preview the video"
+  ],
+  "agent_classes": [
+    "user-facing"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": false,
+    "runs_code": true,
+    "chat_send": true,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "project"
+  ],
+  "model": {
+    "tier": "main"
+  },
+  "subagents": {
+    "allowed": false
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "voicing (TTS) still only when the owner says build (lesson-video skill)"
+  ],
+  "evaluation": "A motion preview of one lesson: the last frame of each slide equals the still slide; stills checked at 0.3 s, 1.2 s and the end; a full lesson renders in minutes. Build rounds: stills show bubbles sliding in, typing dots and older bubbles scrolled up, and the left clip follows the beats.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-10",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Python + Playwright (headless Edge/Chromium) + ffmpeg; on the box use Chromium instead of msedge.",
+  "status": "active",
+  "updated": "2026-10-15"
+}

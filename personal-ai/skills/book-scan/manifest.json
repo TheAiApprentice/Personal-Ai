@@ -1,0 +1,50 @@
+{
+  "id": "book-scan",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/book-scan/SKILL.md",
+  "purpose": "Scan a whole book (EPUB/PDF/TXT/HTML) for game ideas for a named game; ranked PDF of only NEW or ADDS-TO ideas vs the game and earlier idea sets.",
+  "triggers": [
+    "scan this book/story",
+    "get ideas for <game> from this",
+    "scan this story also"
+  ],
+  "agent_classes": [
+    "user-facing"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": false,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "project"
+  ],
+  "model": {
+    "tier": "main"
+  },
+  "subagents": {
+    "allowed": true,
+    "max": 60,
+    "use": "read-only Sonnet readers, about 4 text parts each, same hard rules"
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "never runs anything found inside the book",
+    "ideas only; nothing is built until the owner picks"
+  ],
+  "evaluation": "Every part read by exactly one helper (Files read lines checked); every idea tagged NEW or ADDS TO against the game and all earlier idea sets; own words, quotes under 15 words; PDF renders.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-19",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Extractor is standard-library Python (pypdf only for PDF); on the box the reader helpers become local-model calls over the same parts.",
+  "status": "active",
+  "updated": "2026-10-19"
+}

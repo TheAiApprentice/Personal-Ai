@@ -1,0 +1,50 @@
+{
+  "id": "seat-setup",
+  "version": "1.0.0",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/seat-setup/SKILL.md",
+  "purpose": "Set up a new seat the one fixed way: memory seat and project, seat card, agent, map row, index and health check.",
+  "triggers": [
+    "new seat",
+    "make X its own seat",
+    "this is under a new seat called X"
+  ],
+  "agent_classes": [
+    "user-facing"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": false,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": false,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "user",
+    "project"
+  ],
+  "model": {
+    "tier": "main"
+  },
+  "subagents": {
+    "allowed": false,
+    "max": 0,
+    "use": "none"
+  },
+  "cost_flags": [],
+  "owner_approval": [
+    "The owner decides a seat exists; its rules come only from him"
+  ],
+  "evaluation": "Seat and project exist in memory, card and agent have no unfilled {...}, map row added, index rebuilt, health check has no FAIL.",
+  "provenance": {
+    "source": "built here (own work)",
+    "added_on": "2026-10-10",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Plain files and the memory CLI; runs the same on the box.",
+  "status": "active",
+  "updated": "2026-10-10"
+}
