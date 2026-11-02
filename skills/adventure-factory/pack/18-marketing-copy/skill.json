@@ -1,0 +1,63 @@
+{
+  "id": "18-marketing-copy",
+  "title": "Marketing Copy",
+  "order": 19,
+  "kind": "ai",
+  "role": "marketing",
+  "requires": [
+    "brief",
+    "world",
+    "story",
+    "maps",
+    "handouts",
+    "items"
+  ],
+  "produces": [
+    "marketing"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {
+    "brief": [
+      "tone",
+      "level_band",
+      "play_time_hours"
+    ],
+    "world": [
+      "summary",
+      "themes"
+    ],
+    "story": [
+      "endings"
+    ],
+    "maps": [
+      "maps.*.id"
+    ],
+    "handouts": [
+      "handouts.*.id"
+    ],
+    "items": [
+      "items.*.id"
+    ]
+  },
+  "spec_fields": [
+    "title",
+    "concept",
+    "system_family",
+    "rules_profile",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "tone",
+    "constraints",
+    "rules_specific",
+    "combat_intensity",
+    "entity_counts",
+    "craft_references"
+  ],
+  "max_context_chars": 600000,
+  "validators": [
+    "schema",
+    "domain"
+  ]
+}

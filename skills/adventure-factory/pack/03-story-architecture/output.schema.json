@@ -1,0 +1,278 @@
+{
+  "type": "object",
+  "properties": {
+    "plot_spine": {
+      "type": "string",
+      "minLength": 40
+    },
+    "chapters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "estimated_minutes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000
+          },
+          "opening": {
+            "type": "string"
+          },
+          "scenes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "purpose": {
+                  "type": "string"
+                },
+                "setup": {
+                  "type": "string"
+                },
+                "read_aloud": {
+                  "type": "string"
+                },
+                "developments": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0
+                },
+                "clues": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0
+                },
+                "choices": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0
+                },
+                "fail_forward": {
+                  "type": "string"
+                },
+                "transition": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "location_ref": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "entity_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 0
+                },
+                "clue_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 0
+                },
+                "encounter_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 0
+                },
+                "production_notes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "choices",
+                "clues",
+                "developments",
+                "fail_forward",
+                "name",
+                "purpose",
+                "read_aloud",
+                "setup",
+                "transition",
+                "id",
+                "location_ref",
+                "entity_refs",
+                "clue_refs",
+                "encounter_refs"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "estimated_minutes",
+          "name",
+          "opening",
+          "purpose",
+          "scenes",
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "endings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "requirements": {
+            "type": "string"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "aftermath": {
+            "type": "string"
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "aftermath",
+          "name",
+          "outcome",
+          "requirements"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "sequel_hooks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "entity_registry": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "npc",
+              "location",
+              "creature",
+              "item",
+              "faction",
+              "encounter"
+            ]
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "kind"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "advancement": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "enum": [
+            "milestone",
+            "xp",
+            "none"
+          ]
+        },
+        "guidance": {
+          "type": "string",
+          "minLength": 1
+        },
+        "production_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "method",
+        "guidance"
+      ],
+      "additionalProperties": false
+    },
+    "production_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "plot_spine",
+    "chapters",
+    "endings",
+    "sequel_hooks",
+    "entity_registry",
+    "advancement"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "03-story-architecture output v0.11.1"
+}

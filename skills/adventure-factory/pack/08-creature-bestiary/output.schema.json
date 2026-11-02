@@ -1,0 +1,504 @@
+{
+  "type": "object",
+  "properties": {
+    "creatures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "lore": {
+            "type": "string"
+          },
+          "behavior": {
+            "type": "string"
+          },
+          "tactics": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "defenses": {
+            "type": "string"
+          },
+          "offense": {
+            "type": "string"
+          },
+          "special_abilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "weaknesses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "difficulty_guidance": {
+            "type": "string"
+          },
+          "variants": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "salvage": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "token_prompt": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stat_block": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "ac": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 30
+                  },
+                  "hp": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2000
+                  },
+                  "hit_dice": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "cr": {
+                    "enum": [
+                      "0",
+                      "1/8",
+                      "1/4",
+                      "1/2",
+                      "1",
+                      "2",
+                      "3",
+                      "4",
+                      "5",
+                      "6",
+                      "7",
+                      "8",
+                      "9",
+                      "10",
+                      "11",
+                      "12",
+                      "13",
+                      "14",
+                      "15",
+                      "16",
+                      "17",
+                      "18",
+                      "19",
+                      "20",
+                      "21",
+                      "22",
+                      "23",
+                      "24",
+                      "25",
+                      "26",
+                      "27",
+                      "28",
+                      "29",
+                      "30"
+                    ]
+                  },
+                  "speed": {
+                    "type": "object",
+                    "properties": {
+                      "walk": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 150
+                      },
+                      "fly": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 300
+                      },
+                      "swim": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 150
+                      },
+                      "climb": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 150
+                      },
+                      "burrow": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 150
+                      },
+                      "production_notes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "walk",
+                      "fly",
+                      "swim",
+                      "climb",
+                      "burrow"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "ability_scores": {
+                    "type": "object",
+                    "properties": {
+                      "STR": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 30
+                      },
+                      "DEX": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 30
+                      },
+                      "CON": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 30
+                      },
+                      "INT": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 30
+                      },
+                      "WIS": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 30
+                      },
+                      "CHA": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 30
+                      },
+                      "production_notes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "STR",
+                      "DEX",
+                      "CON",
+                      "INT",
+                      "WIS",
+                      "CHA"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "actions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "kind": {
+                          "enum": [
+                            "attack",
+                            "save",
+                            "utility"
+                          ]
+                        },
+                        "attack_bonus": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": -5,
+                              "maximum": 20
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "save_dc": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 40
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "save_ability": {
+                          "anyOf": [
+                            {
+                              "enum": [
+                                "STR",
+                                "DEX",
+                                "CON",
+                                "INT",
+                                "WIS",
+                                "CHA"
+                              ]
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "reach_ft": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 1000
+                        },
+                        "damage_dice": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "damage_type": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "effect": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "production_notes": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "attack_type": {
+                          "enum": [
+                            "Melee Weapon Attack",
+                            "Ranged Weapon Attack",
+                            "Melee Spell Attack",
+                            "Ranged Spell Attack",
+                            null
+                          ]
+                        },
+                        "range_ft": {
+                          "type": [
+                            "integer",
+                            "null"
+                          ],
+                          "minimum": 0,
+                          "maximum": 1000
+                        },
+                        "targets": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "kind",
+                        "attack_bonus",
+                        "save_dc",
+                        "save_ability",
+                        "reach_ft",
+                        "damage_dice",
+                        "damage_type",
+                        "effect",
+                        "attack_type",
+                        "range_ft",
+                        "targets"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  },
+                  "traits": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "minItems": 0
+                  },
+                  "saves": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "ability": {
+                          "enum": [
+                            "STR",
+                            "DEX",
+                            "CON",
+                            "INT",
+                            "WIS",
+                            "CHA"
+                          ]
+                        },
+                        "bonus": {
+                          "type": "integer",
+                          "minimum": -5,
+                          "maximum": 20
+                        },
+                        "production_notes": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "ability",
+                        "bonus"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "senses": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "minItems": 0
+                  },
+                  "languages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "minItems": 0
+                  },
+                  "production_notes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "ac",
+                  "hp",
+                  "hit_dice",
+                  "cr",
+                  "speed",
+                  "ability_scores",
+                  "actions",
+                  "traits",
+                  "saves",
+                  "senses",
+                  "languages"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "size": {
+            "enum": [
+              "Tiny",
+              "Small",
+              "Medium",
+              "Large",
+              "Huge",
+              "Gargantuan"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 80
+          }
+        },
+        "required": [
+          "behavior",
+          "defenses",
+          "description",
+          "difficulty_guidance",
+          "lore",
+          "name",
+          "offense",
+          "role",
+          "salvage",
+          "special_abilities",
+          "tactics",
+          "token_prompt",
+          "variants",
+          "weaknesses",
+          "id",
+          "stat_block",
+          "size",
+          "type"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "production_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "creatures"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "08-creature-bestiary output v0.11.1"
+}

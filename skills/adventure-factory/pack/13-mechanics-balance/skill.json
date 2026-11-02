@@ -1,0 +1,89 @@
+{
+  "id": "13-mechanics-balance",
+  "title": "Mechanics Balance",
+  "order": 15,
+  "kind": "ai",
+  "role": "mechanics_audit",
+  "requires": [
+    "brief",
+    "story",
+    "encounters",
+    "creatures",
+    "items"
+  ],
+  "produces": [
+    "mechanics_audit"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {
+    "brief": [
+      "rules_profile",
+      "level_band",
+      "party_size"
+    ],
+    "story": [
+      "advancement"
+    ],
+    "encounters": [
+      "encounters",
+      "random_encounters"
+    ],
+    "creatures": [
+      "creatures"
+    ],
+    "items": [
+      "items"
+    ]
+  },
+  "spec_fields": [
+    "title",
+    "concept",
+    "system_family",
+    "rules_profile",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "tone",
+    "constraints",
+    "mechanics_profile",
+    "release",
+    "rules_specific",
+    "combat_intensity",
+    "entity_counts",
+    "craft_references"
+  ],
+  "max_context_chars": 2000000,
+  "validators": [
+    "schema",
+    "domain"
+  ],
+  "audit_sections": {
+    "mode": "per_chapter",
+    "note": "0.11.3: one pass per chapter (its encounters, creatures and items, plus read-only stat blocks and item rules of creatures and items it uses from other chapters) and one cross-section pass (rules profile, advancement, random encounters, index). Unchanged passes are reused by fingerprint.",
+    "sectioned": [
+      "encounters.encounters",
+      "creatures.creatures",
+      "items.items"
+    ],
+    "referenced": {
+      "creatures.creatures": [
+        "id",
+        "name",
+        "size",
+        "type",
+        "stat_block"
+      ],
+      "items.items": [
+        "id",
+        "name",
+        "rarity",
+        "attunement",
+        "charges",
+        "recharge",
+        "exact_rules_text",
+        "rules"
+      ]
+    }
+  }
+}

@@ -1,0 +1,551 @@
+{
+  "type": "object",
+  "properties": {
+    "encounters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "narrative_purpose": {
+            "type": "string"
+          },
+          "location_ref": {
+            "type": "string"
+          },
+          "setup": {
+            "type": "string"
+          },
+          "battlefield": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "participants": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "motivations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "objective": {
+            "type": "string"
+          },
+          "tactics": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "dynamic_events": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "alternate_solutions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "scaling": {
+            "type": "object",
+            "properties": {
+              "weaker": {
+                "type": "string"
+              },
+              "stronger": {
+                "type": "string"
+              },
+              "production_notes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "weaker",
+              "stronger"
+            ],
+            "additionalProperties": false
+          },
+          "failure": {
+            "type": "string"
+          },
+          "retreat": {
+            "type": "string"
+          },
+          "rewards": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "consequences": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "twist": {
+            "type": "string"
+          },
+          "gm_quick_run": {
+            "type": "string"
+          },
+          "checks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "ability_or_method": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "dc": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 40
+                },
+                "automatic_conditions": {
+                  "type": "string"
+                },
+                "fail_forward": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "production_notes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "failure_cost": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "enum": [
+                        "none",
+                        "resource",
+                        "position",
+                        "relationship",
+                        "outcome"
+                      ]
+                    },
+                    "amount": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "target": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "amount",
+                    "target",
+                    "description"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "id",
+                "ability_or_method",
+                "dc",
+                "automatic_conditions",
+                "fail_forward",
+                "failure_cost"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0
+          },
+          "hazards": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "trigger": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "save_ability": {
+                  "enum": [
+                    "STR",
+                    "DEX",
+                    "CON",
+                    "INT",
+                    "WIS",
+                    "CHA"
+                  ]
+                },
+                "dc": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 40
+                },
+                "damage": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "dice": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "type": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "production_notes": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "dice",
+                        "type"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "effect": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "duration": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "on_success": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "countermeasures": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 1
+                },
+                "production_notes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "trigger",
+                "save_ability",
+                "dc",
+                "damage",
+                "effect",
+                "duration",
+                "on_success",
+                "countermeasures"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0
+          },
+          "creature_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 0
+          },
+          "item_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 0
+          },
+          "npc_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 0
+          },
+          "rules_mentions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "creature",
+                    "hazard",
+                    "item"
+                  ]
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "ref": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "production_notes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "kind",
+                "name",
+                "ref"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "combat_intensity": {
+            "enum": [
+              "low",
+              "standard",
+              "high"
+            ]
+          },
+          "combatants": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "creature_ref": {
+                  "type": "string"
+                },
+                "count": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 99
+                }
+              },
+              "required": [
+                "creature_ref",
+                "count"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "alternate_solutions",
+          "battlefield",
+          "consequences",
+          "dynamic_events",
+          "failure",
+          "gm_quick_run",
+          "id",
+          "location_ref",
+          "motivations",
+          "name",
+          "narrative_purpose",
+          "objective",
+          "participants",
+          "retreat",
+          "rewards",
+          "scaling",
+          "setup",
+          "tactics",
+          "twist",
+          "type",
+          "checks",
+          "hazards",
+          "creature_refs",
+          "item_refs",
+          "npc_refs",
+          "rules_mentions",
+          "combat_intensity",
+          "combatants"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "random_encounters": {
+      "type": "object",
+      "properties": {
+        "die_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "event": {
+                "type": "string"
+              },
+              "roll": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000
+              },
+              "production_notes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "event",
+              "name",
+              "roll"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "production_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "die_size",
+        "entries"
+      ],
+      "additionalProperties": false
+    },
+    "rumor_table": {
+      "type": "object",
+      "properties": {
+        "die_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "rumor": {
+                "type": "string"
+              },
+              "truth": {
+                "type": "string"
+              },
+              "roll": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000
+              },
+              "production_notes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "rumor",
+              "truth",
+              "roll"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "production_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "die_size",
+        "entries"
+      ],
+      "additionalProperties": false
+    },
+    "production_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "encounters",
+    "random_encounters",
+    "rumor_table"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "07-encounter-design output v0.11.1"
+}

@@ -1,0 +1,127 @@
+{
+  "type": "object",
+  "properties": {
+    "factions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "public_face": {
+            "type": "string"
+          },
+          "origin": {
+            "type": "string"
+          },
+          "ideology": {
+            "type": "string"
+          },
+          "goal": {
+            "type": "string"
+          },
+          "methods": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "resources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "territory": {
+            "type": "string"
+          },
+          "leader_ref": {
+            "type": "string"
+          },
+          "member_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "relationships": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "internal_conflicts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "recruitment": {
+            "type": "string"
+          },
+          "visual_identity": {
+            "type": "string"
+          },
+          "secret": {
+            "type": "string"
+          },
+          "what_they_do_if_ignored": {
+            "type": "string"
+          },
+          "adventure_role": {
+            "type": "string"
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "adventure_role",
+          "goal",
+          "id",
+          "ideology",
+          "internal_conflicts",
+          "leader_ref",
+          "member_refs",
+          "methods",
+          "name",
+          "origin",
+          "public_face",
+          "recruitment",
+          "relationships",
+          "resources",
+          "secret",
+          "territory",
+          "visual_identity",
+          "what_they_do_if_ignored"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "production_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "factions"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "02-faction-design output v0.11.1"
+}

@@ -1,0 +1,65 @@
+{
+  "id": "17-editorial-polish",
+  "title": "Editorial Polish",
+  "order": 18,
+  "kind": "ai",
+  "role": "polish",
+  "requires": [
+    "story",
+    "npcs",
+    "locations",
+    "encounters"
+  ],
+  "produces": [
+    "polish"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {
+    "story": [
+      "chapters",
+      "endings"
+    ],
+    "npcs": [
+      "npcs"
+    ],
+    "locations": [
+      "locations"
+    ],
+    "encounters": [
+      "encounters"
+    ]
+  },
+  "spec_fields": [
+    "title",
+    "concept",
+    "system_family",
+    "rules_profile",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "tone",
+    "constraints",
+    "rules_specific",
+    "combat_intensity",
+    "entity_counts",
+    "craft_references",
+    "art_plan"
+  ],
+  "max_context_chars": 2000000,
+  "validators": [
+    "schema",
+    "domain"
+  ],
+  "audit_sections": {
+    "mode": "per_chapter",
+    "note": "0.11.3: one pass per chapter (chapter, NPCs, level and encounters placed in it, with the negation warnings for those paths) and one cross-section pass (endings and index). Unchanged passes are reused by fingerprint.",
+    "sectioned": [
+      "story.chapters",
+      "npcs.npcs",
+      "locations.locations",
+      "encounters.encounters"
+    ],
+    "referenced": []
+  }
+}

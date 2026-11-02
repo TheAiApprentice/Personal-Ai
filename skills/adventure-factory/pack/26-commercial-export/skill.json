@@ -1,0 +1,21 @@
+{
+  "id": "26-commercial-export",
+  "title": "Commercial Asset Export",
+  "order": 31,
+  "kind": "builtin",
+  "role": "commercial_export",
+  "requires": [
+    "project"
+  ],
+  "produces": [
+    "commercial_files"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {},
+  "spec_fields": [],
+  "max_context_chars": 0,
+  "validators": [
+    "schema"
+  ]
+}

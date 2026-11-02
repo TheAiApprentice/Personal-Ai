@@ -1,0 +1,42 @@
+{
+  "id": "00-project-intake",
+  "title": "Project Intake",
+  "order": 2,
+  "kind": "ai",
+  "role": "intake",
+  "requires": [
+    "market_pulse"
+  ],
+  "produces": [
+    "brief"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {
+    "market_pulse": [
+      "status",
+      "signals",
+      "limitations"
+    ]
+  },
+  "spec_fields": [
+    "title",
+    "concept",
+    "system_family",
+    "rules_profile",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "tone",
+    "constraints",
+    "rules_specific",
+    "combat_intensity",
+    "entity_counts",
+    "craft_references"
+  ],
+  "max_context_chars": 150000,
+  "validators": [
+    "schema",
+    "domain"
+  ]
+}

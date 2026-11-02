@@ -1,0 +1,79 @@
+{
+  "type": "object",
+  "properties": {
+    "handouts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "author_or_source": {
+            "type": "string"
+          },
+          "age_or_condition": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "clue_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "content": {
+            "type": "string"
+          },
+          "visual_style": {
+            "type": "string"
+          },
+          "player_safe": {
+            "type": "boolean"
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "age_or_condition",
+          "author_or_source",
+          "clue_refs",
+          "content",
+          "id",
+          "player_safe",
+          "purpose",
+          "title",
+          "type",
+          "visual_style"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "production_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "handouts"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "11-handout-design output v0.11.1"
+}

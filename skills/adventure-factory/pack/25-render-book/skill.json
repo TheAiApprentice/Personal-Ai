@@ -1,0 +1,22 @@
+{
+  "id": "25-render-book",
+  "title": "Render Book",
+  "order": 29,
+  "kind": "builtin",
+  "role": "render_book",
+  "requires": [
+    "project",
+    "map_files"
+  ],
+  "produces": [
+    "book_files"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {},
+  "spec_fields": [],
+  "max_context_chars": 0,
+  "validators": [
+    "schema"
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "type": "object",
+  "properties": {
+    "verdict": {
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "severity": {
+            "enum": [
+              "blocking",
+              "warning",
+              "info"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^/"
+          },
+          "owner_skill": {
+            "type": "string",
+            "minLength": 1
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1
+          },
+          "required_fix": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "severity",
+          "path",
+          "owner_skill",
+          "message",
+          "required_fix"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "verdict",
+    "findings"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "14-continuity-audit output v0.11.1"
+}

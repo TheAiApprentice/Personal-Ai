@@ -1,0 +1,66 @@
+{
+  "id": "09-item-treasure-design",
+  "title": "Item & Treasure Design",
+  "order": 11,
+  "kind": "ai",
+  "role": "items",
+  "requires": [
+    "brief",
+    "story",
+    "locations",
+    "encounters"
+  ],
+  "produces": [
+    "items"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {
+    "brief": [
+      "rules_profile",
+      "level_band"
+    ],
+    "story": [
+      "entity_registry",
+      "advancement"
+    ],
+    "locations": [
+      "locations.*.id",
+      "locations.*.name",
+      "locations.*.treasure",
+      "locations.*.rooms.*.id",
+      "locations.*.rooms.*.name",
+      "locations.*.rooms.*.contents",
+      "locations.*.rooms.*.hidden_elements",
+      "locations.*.rooms.*.treasure",
+      "locations.*.rooms.*.item_refs",
+      "locations.*.rooms.*.encounter_refs"
+    ],
+    "encounters": [
+      "encounters.*.item_refs",
+      "encounters.*.rewards",
+      "encounters.*.rules_mentions"
+    ]
+  },
+  "spec_fields": [
+    "title",
+    "concept",
+    "system_family",
+    "rules_profile",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "tone",
+    "constraints",
+    "mechanics_profile",
+    "rules_specific",
+    "combat_intensity",
+    "entity_counts",
+    "craft_references"
+  ],
+  "max_context_chars": 900000,
+  "validators": [
+    "schema",
+    "domain"
+  ]
+}

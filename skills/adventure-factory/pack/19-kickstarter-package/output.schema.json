@@ -1,0 +1,122 @@
+{
+  "type": "object",
+  "properties": {
+    "headline": {
+      "type": "string"
+    },
+    "subheadline": {
+      "type": "string"
+    },
+    "campaign_story": {
+      "type": "string"
+    },
+    "whats_inside": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "creator_pitch_template": {
+      "type": "string"
+    },
+    "reward_tier_ideas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "stretch_goal_ideas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "risks_and_challenges_template": {
+      "type": "string"
+    },
+    "faq": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "image_needed_list": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "update_plan_outline": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "deliverable_claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "enum": [
+              "book",
+              "maps",
+              "cards",
+              "handouts"
+            ]
+          },
+          "minimum_count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 500
+          },
+          "variant": {
+            "type": "string"
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "kind",
+          "minimum_count",
+          "variant"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "production_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "headline",
+    "subheadline",
+    "campaign_story",
+    "whats_inside",
+    "creator_pitch_template",
+    "reward_tier_ideas",
+    "stretch_goal_ideas",
+    "risks_and_challenges_template",
+    "faq",
+    "image_needed_list",
+    "update_plan_outline",
+    "deliverable_claims"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "19-kickstarter-package output v0.11.1"
+}

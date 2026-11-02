@@ -1,0 +1,20 @@
+{
+  "id": "24b-foundry-export",
+  "title": "Foundry VTT Export",
+  "version": "0.11.1",
+  "order": 28,
+  "kind": "builtin",
+  "role": "foundry_export",
+  "requires": [
+    "project",
+    "map_files",
+    "handout_files"
+  ],
+  "produces": [
+    "foundry_files"
+  ],
+  "output_schema": "output.schema.json",
+  "context": {},
+  "spec_fields": [],
+  "max_context_chars": 900000
+}

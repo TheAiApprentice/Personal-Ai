@@ -1,0 +1,92 @@
+{
+  "type": "object",
+  "properties": {
+    "qa": {
+      "type": "object",
+      "properties": {
+        "release_preflight": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "pass",
+                "blocked",
+                "review_required"
+              ]
+            },
+            "blocking_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "finding_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              },
+              "minItems": 0
+            },
+            "model_identities": {
+              "type": "object"
+            },
+            "release_policy": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "status",
+            "blocking_count",
+            "finding_count",
+            "findings"
+          ],
+          "additionalProperties": false
+        },
+        "validation": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "minItems": 0
+        },
+        "references": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "minItems": 0
+        },
+        "ip_review": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "minItems": 0
+        },
+        "model_identities": {
+          "type": "object"
+        },
+        "scope_preflight": {
+          "type": "object"
+        },
+        "usage": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "release_preflight",
+        "validation",
+        "references",
+        "ip_review"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "qa"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

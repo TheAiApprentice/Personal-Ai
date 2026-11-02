@@ -1,0 +1,324 @@
+{
+  "type": "object",
+  "properties": {
+    "npcs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "ancestry": {
+            "type": "string"
+          },
+          "age": {
+            "type": "string"
+          },
+          "occupation": {
+            "type": "string"
+          },
+          "faction_ref": {
+            "type": "string"
+          },
+          "appearance": {
+            "type": "string",
+            "minLength": 1
+          },
+          "clothing": {
+            "type": "string"
+          },
+          "distinguishing_features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "personality": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mannerisms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "speech_style": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sample_lines": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 2
+          },
+          "beliefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "fears": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "desires": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "flaws": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "boundaries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "history": {
+            "type": "string",
+            "minLength": 1
+          },
+          "relationships": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "npc_ref": {
+                  "type": "string"
+                },
+                "relationship": {
+                  "type": "string"
+                },
+                "production_notes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "npc_ref",
+                "relationship"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0
+          },
+          "adventure_role": {
+            "type": "string"
+          },
+          "immediate_goal": {
+            "type": "string",
+            "minLength": 1
+          },
+          "long_term_goal": {
+            "type": "string",
+            "minLength": 1
+          },
+          "knows": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "believes_wrongly": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "secret": {
+            "type": "string",
+            "minLength": 1
+          },
+          "leverage": {
+            "type": "string"
+          },
+          "first_impression": {
+            "type": "string"
+          },
+          "trust_reveal": {
+            "type": "string"
+          },
+          "never_admits": {
+            "type": "string"
+          },
+          "reactions": {
+            "type": "object",
+            "properties": {
+              "friendly": {
+                "type": "string"
+              },
+              "intimidated": {
+                "type": "string"
+              },
+              "bribed": {
+                "type": "string"
+              },
+              "deceived": {
+                "type": "string"
+              },
+              "attacked": {
+                "type": "string"
+              },
+              "saved": {
+                "type": "string"
+              },
+              "betrayed": {
+                "type": "string"
+              },
+              "production_notes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "friendly",
+              "intimidated",
+              "bribed",
+              "deceived",
+              "attacked",
+              "saved",
+              "betrayed"
+            ],
+            "additionalProperties": false
+          },
+          "combat_notes": {
+            "type": "string"
+          },
+          "if_ignored": {
+            "type": "string",
+            "minLength": 1
+          },
+          "portrait_prompt": {
+            "type": "string"
+          },
+          "combat_capable": {
+            "type": "boolean"
+          },
+          "creature_ref": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "print_reactions": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "friendly",
+                "intimidated",
+                "bribed",
+                "deceived",
+                "attacked",
+                "saved",
+                "betrayed"
+              ]
+            },
+            "minItems": 4,
+            "maxItems": 4,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "adventure_role",
+          "age",
+          "aliases",
+          "ancestry",
+          "appearance",
+          "beliefs",
+          "believes_wrongly",
+          "boundaries",
+          "clothing",
+          "combat_notes",
+          "desires",
+          "distinguishing_features",
+          "faction_ref",
+          "fears",
+          "first_impression",
+          "flaws",
+          "history",
+          "id",
+          "if_ignored",
+          "immediate_goal",
+          "knows",
+          "leverage",
+          "long_term_goal",
+          "mannerisms",
+          "name",
+          "never_admits",
+          "occupation",
+          "personality",
+          "portrait_prompt",
+          "reactions",
+          "relationships",
+          "sample_lines",
+          "secret",
+          "speech_style",
+          "trust_reveal",
+          "combat_capable",
+          "creature_ref",
+          "print_reactions"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "production_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "npcs"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "05-npc-development output v0.11.1"
+}

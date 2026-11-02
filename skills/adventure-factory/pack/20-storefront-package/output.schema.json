@@ -1,0 +1,114 @@
+{
+  "type": "object",
+  "properties": {
+    "seo_title": {
+      "type": "string"
+    },
+    "short_copy": {
+      "type": "string"
+    },
+    "long_copy": {
+      "type": "string"
+    },
+    "feature_bullets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "content_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "suggested_preview_pages": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "product_contents_list": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "platform_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "deliverable_claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "enum": [
+              "book",
+              "maps",
+              "cards",
+              "handouts"
+            ]
+          },
+          "minimum_count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 500
+          },
+          "variant": {
+            "type": "string"
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "kind",
+          "minimum_count",
+          "variant"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "production_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "seo_title",
+    "short_copy",
+    "long_copy",
+    "feature_bullets",
+    "tags",
+    "content_notes",
+    "suggested_preview_pages",
+    "product_contents_list",
+    "platform_notes",
+    "deliverable_claims"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "20-storefront-package output v0.11.1"
+}

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "market_pulse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "skipped",
+            "partial",
+            "complete"
+          ]
+        },
+        "signals": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "retrieved_at": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "signals",
+        "sources",
+        "limitations",
+        "retrieved_at"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "market_pulse"
+  ],
+  "additionalProperties": false
+}

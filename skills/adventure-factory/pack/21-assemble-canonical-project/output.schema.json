@@ -1,0 +1,39 @@
+{
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "spec": {
+          "type": "object"
+        },
+        "adventure": {
+          "type": "object"
+        },
+        "assets": {
+          "type": "object"
+        },
+        "generation": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "schema_version",
+        "spec",
+        "adventure",
+        "assets",
+        "generation"
+      ],
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "project"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

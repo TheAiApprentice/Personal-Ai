@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "properties": {
+    "release_zip": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "release_zip"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

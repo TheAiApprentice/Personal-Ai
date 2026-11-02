@@ -1,0 +1,21 @@
+{
+  "id": "23-render-cards",
+  "title": "Render Cards",
+  "order": 26,
+  "kind": "builtin",
+  "role": "render_cards",
+  "requires": [
+    "project"
+  ],
+  "produces": [
+    "card_files"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {},
+  "spec_fields": [],
+  "max_context_chars": 0,
+  "validators": [
+    "schema"
+  ]
+}

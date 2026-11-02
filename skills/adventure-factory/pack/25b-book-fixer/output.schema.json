@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "book_proof": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "pass",
+            "blocked"
+          ]
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "fixes": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "pdf_sha256": {
+          "type": "string"
+        },
+        "human_visual_review": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "findings",
+        "fixes",
+        "pdf_sha256",
+        "human_visual_review"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "book_proof"
+  ],
+  "additionalProperties": false
+}

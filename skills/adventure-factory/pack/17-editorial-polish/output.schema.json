@@ -1,0 +1,97 @@
+{
+  "type": "object",
+  "properties": {
+    "verdict": {
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "severity": {
+            "enum": [
+              "blocking",
+              "warning",
+              "info"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^/"
+          },
+          "owner_skill": {
+            "type": "string",
+            "minLength": 1
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1
+          },
+          "required_fix": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "severity",
+          "path",
+          "owner_skill",
+          "message",
+          "required_fix"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "patches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "op": {
+            "enum": [
+              "add",
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^/"
+          },
+          "before": {},
+          "value": {},
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "op",
+          "path",
+          "before",
+          "value",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "verdict",
+    "findings",
+    "patches"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "17-editorial-polish output v0.11.1"
+}

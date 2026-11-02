@@ -1,0 +1,57 @@
+{
+  "id": "adventure-factory",
+  "version": "0.11.3",
+  "manifest_schema": "pai-skill-manifest/1",
+  "skill_path": "skills/adventure-factory/SKILL.md",
+  "purpose": "Make a complete, playable tabletop adventure book from a creator's brief through a fixed chain of 35 skills and a master (pack/).",
+  "triggers": [
+    "make an adventure",
+    "adventure book",
+    "campaign book",
+    "adventure factory"
+  ],
+  "agent_classes": [
+    "user-facing"
+  ],
+  "permissions": {
+    "files_read": true,
+    "files_write": true,
+    "network": true,
+    "runs_code": true,
+    "chat_send": false,
+    "spends_money": true,
+    "touches_other_systems": false
+  },
+  "memory_scopes": [
+    "project"
+  ],
+  "model": {
+    "tier": "main",
+    "notes": "writing stages on the main model; audits should run on a separately configured model (same-model audits get a visible warning)"
+  },
+  "subagents": {
+    "allowed": false,
+    "max": 0,
+    "use": ""
+  },
+  "cost_flags": [
+    "model calls for every writing and audit stage",
+    "optional paid image generation for book art"
+  ],
+  "owner_approval": [
+    "any gameplay mechanic or required story structure outside the approved scope",
+    "Market Pulse research (opt-in)",
+    "paid image generation",
+    "publication of the exact reviewed version"
+  ],
+  "evaluation": "Every stage output is checked against its output.schema.json by the application; audits and Book Fixer block release on defects; Final QA rescans all public copy and generated files.",
+  "provenance": {
+    "source": "built here (the owner's own skill pack); application code not included in this repo",
+    "added_on": "2026-11-02",
+    "license": "unspecified (the repo owner picks one before publishing)",
+    "group": "built"
+  },
+  "portability": "Plain markdown skills with JSON contracts; any model that follows instructions can fill the ai stages.",
+  "status": "active",
+  "updated": "2026-11-02"
+}

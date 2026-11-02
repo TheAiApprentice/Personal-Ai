@@ -1,0 +1,72 @@
+{
+  "id": "10-map-planning",
+  "title": "Map Planning",
+  "order": 12,
+  "kind": "ai",
+  "role": "maps",
+  "requires": [
+    "brief",
+    "world",
+    "locations",
+    "encounters"
+  ],
+  "produces": [
+    "maps"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {
+    "brief": [
+      "map_needs"
+    ],
+    "world": [
+      "visual_style"
+    ],
+    "locations": [
+      "locations.*.id",
+      "locations.*.name",
+      "locations.*.map_required",
+      "locations.*.rooms.*.id",
+      "locations.*.rooms.*.name",
+      "locations.*.rooms.*.purpose",
+      "locations.*.rooms.*.width",
+      "locations.*.rooms.*.height",
+      "locations.*.rooms.*.ceiling",
+      "locations.*.rooms.*.lighting",
+      "locations.*.rooms.*.doors",
+      "locations.*.rooms.*.connections",
+      "locations.*.rooms.*.contents",
+      "locations.*.rooms.*.interactive_features",
+      "locations.*.rooms.*.hidden_elements",
+      "locations.*.rooms.*.treasure",
+      "locations.*.rooms.*.hazards",
+      "locations.*.rooms.*.encounter_refs",
+      "locations.*.rooms.*.hazard_refs"
+    ],
+    "encounters": [
+      "encounters.*.location_ref",
+      "encounters.*.battlefield",
+      "encounters.*.hazards"
+    ]
+  },
+  "spec_fields": [
+    "title",
+    "concept",
+    "system_family",
+    "rules_profile",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "tone",
+    "constraints",
+    "rules_specific",
+    "combat_intensity",
+    "entity_counts",
+    "craft_references"
+  ],
+  "max_context_chars": 900000,
+  "validators": [
+    "schema",
+    "domain"
+  ]
+}

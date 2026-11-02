@@ -1,0 +1,27 @@
+{
+  "id": "29-final-qa",
+  "title": "Final QA",
+  "order": 34,
+  "kind": "builtin",
+  "role": "final_qa",
+  "requires": [
+    "project",
+    "map_files",
+    "card_files",
+    "handout_files",
+    "book_files",
+    "book_proof",
+    "foundry_files"
+  ],
+  "produces": [
+    "qa"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {},
+  "spec_fields": [],
+  "max_context_chars": 0,
+  "validators": [
+    "schema"
+  ]
+}

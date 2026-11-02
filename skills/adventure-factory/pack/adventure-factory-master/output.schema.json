@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "root": {
+      "type": "string"
+    },
+    "release_status": {
+      "enum": [
+        "pass",
+        "blocked",
+        "review_required"
+      ]
+    },
+    "blocking_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "publisher_source_zip": {
+      "type": "string"
+    },
+    "generation_mode": {
+      "enum": [
+        "live_model",
+        "layout_demo",
+        "unverified"
+      ]
+    }
+  },
+  "required": [
+    "root",
+    "release_status",
+    "blocking_count",
+    "publisher_source_zip",
+    "generation_mode"
+  ],
+  "additionalProperties": true
+}

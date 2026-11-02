@@ -1,0 +1,52 @@
+{
+  "id": "19-kickstarter-package",
+  "title": "Kickstarter Package",
+  "order": 20,
+  "kind": "ai",
+  "role": "kickstarter",
+  "requires": [
+    "brief",
+    "marketing",
+    "art_direction"
+  ],
+  "produces": [
+    "kickstarter"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {
+    "brief": [
+      "level_band",
+      "play_time_hours"
+    ],
+    "marketing": [
+      "elevator_pitch",
+      "short_description",
+      "feature_bullets",
+      "deliverable_claims"
+    ],
+    "art_direction": [
+      "cover_spec"
+    ]
+  },
+  "spec_fields": [
+    "title",
+    "concept",
+    "system_family",
+    "rules_profile",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "tone",
+    "constraints",
+    "rules_specific",
+    "combat_intensity",
+    "entity_counts",
+    "craft_references"
+  ],
+  "max_context_chars": 600000,
+  "validators": [
+    "schema",
+    "domain"
+  ]
+}

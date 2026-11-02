@@ -1,0 +1,54 @@
+{
+  "id": "03-story-architecture",
+  "title": "Story Architecture",
+  "order": 5,
+  "kind": "ai",
+  "role": "story",
+  "requires": [
+    "brief",
+    "world",
+    "factions"
+  ],
+  "produces": [
+    "story"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {
+    "brief": [
+      "premise",
+      "level_band",
+      "play_time_hours",
+      "product_size"
+    ],
+    "world": [
+      "summary",
+      "background",
+      "hooks",
+      "secrets"
+    ],
+    "factions": [
+      "factions"
+    ]
+  },
+  "spec_fields": [
+    "title",
+    "concept",
+    "system_family",
+    "rules_profile",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "tone",
+    "constraints",
+    "rules_specific",
+    "combat_intensity",
+    "entity_counts",
+    "craft_references"
+  ],
+  "max_context_chars": 150000,
+  "validators": [
+    "schema",
+    "domain"
+  ]
+}

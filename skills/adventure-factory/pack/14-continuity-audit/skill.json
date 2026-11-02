@@ -1,0 +1,122 @@
+{
+  "id": "14-continuity-audit",
+  "title": "Continuity Audit",
+  "order": 16,
+  "kind": "ai",
+  "role": "continuity_audit",
+  "requires": [
+    "world",
+    "factions",
+    "story",
+    "clues",
+    "npcs",
+    "locations",
+    "encounters",
+    "maps",
+    "handouts"
+  ],
+  "produces": [
+    "continuity_audit"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {
+    "world": [
+      "background",
+      "secrets"
+    ],
+    "factions": [
+      "factions"
+    ],
+    "story": [
+      "plot_spine",
+      "chapters",
+      "entity_registry",
+      "endings"
+    ],
+    "clues": [
+      "clue_web",
+      "critical_revelations"
+    ],
+    "npcs": [
+      "npcs.*.id",
+      "npcs.*.name",
+      "npcs.*.history",
+      "npcs.*.secret",
+      "npcs.*.relationships"
+    ],
+    "locations": [
+      "locations.*.id",
+      "locations.*.rooms"
+    ],
+    "encounters": [
+      "encounters.*.id",
+      "encounters.*.location_ref",
+      "encounters.*.consequences"
+    ],
+    "maps": [
+      "maps.*.location_ref",
+      "maps.*.rooms"
+    ],
+    "handouts": [
+      "handouts"
+    ]
+  },
+  "spec_fields": [
+    "title",
+    "concept",
+    "system_family",
+    "rules_profile",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "tone",
+    "constraints",
+    "rules_specific",
+    "combat_intensity",
+    "entity_counts",
+    "craft_references"
+  ],
+  "max_context_chars": 2000000,
+  "validators": [
+    "schema",
+    "domain"
+  ],
+  "audit_sections": {
+    "mode": "per_chapter",
+    "note": "0.11.3: one pass per chapter (chapter, its clues, NPCs, level, encounters, map and handouts, plus read-only NPC secrets/relationships and clue routes it mentions from other chapters) and one cross-section pass (world, factions, registry, endings, critical revelations and the index with every ref field and each clue's reveals). Unchanged passes are reused by fingerprint.",
+    "shared_read_only": [
+      "story.plot_spine"
+    ],
+    "sectioned": [
+      "story.chapters",
+      "clues.clue_web",
+      "npcs.npcs",
+      "locations.locations",
+      "encounters.encounters",
+      "maps.maps",
+      "handouts.handouts"
+    ],
+    "referenced": {
+      "npcs.npcs": [
+        "id",
+        "name",
+        "secret",
+        "relationships"
+      ],
+      "clues.clue_web": [
+        "id",
+        "clue",
+        "reveals",
+        "found_at_refs",
+        "points_to_refs",
+        "backup_refs"
+      ]
+    },
+    "index_fields": {
+      "clues.clue_web": [
+        "reveals"
+      ]
+    }
+  }
+}

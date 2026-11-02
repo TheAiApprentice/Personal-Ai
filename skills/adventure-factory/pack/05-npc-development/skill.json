@@ -1,0 +1,61 @@
+{
+  "id": "05-npc-development",
+  "title": "NPC Development",
+  "order": 7,
+  "kind": "ai",
+  "role": "npcs",
+  "requires": [
+    "brief",
+    "world",
+    "factions",
+    "story",
+    "clues"
+  ],
+  "produces": [
+    "npcs"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {
+    "brief": [
+      "tone",
+      "level_band"
+    ],
+    "world": [
+      "summary",
+      "visual_style"
+    ],
+    "factions": [
+      "factions"
+    ],
+    "story": [
+      "entity_registry"
+    ],
+    "clues": [
+      "clue_web",
+      "critical_revelations"
+    ]
+  },
+  "spec_fields": [
+    "title",
+    "concept",
+    "system_family",
+    "rules_profile",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "tone",
+    "constraints",
+    "rules_specific",
+    "combat_intensity",
+    "entity_counts",
+    "craft_references"
+  ],
+  "max_context_chars": 150000,
+  "validators": [
+    "schema",
+    "domain"
+  ],
+  "execution_strategy": "per_entity",
+  "registry_kind": "npc"
+}

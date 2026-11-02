@@ -1,0 +1,109 @@
+{
+  "id": "16-commercial-ip-review",
+  "title": "Commercial & IP Review",
+  "order": 22,
+  "kind": "ai",
+  "role": "commercial_audit",
+  "requires": [
+    "brief",
+    "world",
+    "factions",
+    "story",
+    "npcs",
+    "creatures",
+    "items",
+    "marketing",
+    "kickstarter",
+    "storefront",
+    "maps",
+    "handouts",
+    "art_direction"
+  ],
+  "produces": [
+    "commercial_audit"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {
+    "brief": [
+      "rules_basis",
+      "compatibility_label",
+      "license_basis"
+    ],
+    "world": [
+      "summary",
+      "background"
+    ],
+    "factions": [
+      "factions.*.name"
+    ],
+    "story": [
+      "chapters"
+    ],
+    "npcs": [
+      "npcs.*.name",
+      "npcs.*.history"
+    ],
+    "creatures": [
+      "creatures.*.name",
+      "creatures.*.lore"
+    ],
+    "items": [
+      "items.*.name",
+      "items.*.history"
+    ],
+    "marketing": [
+      "*"
+    ],
+    "kickstarter": [
+      "*"
+    ],
+    "storefront": [
+      "*"
+    ],
+    "maps": [
+      "*"
+    ],
+    "handouts": [
+      "*"
+    ],
+    "art_direction": [
+      "*"
+    ]
+  },
+  "spec_fields": [
+    "title",
+    "concept",
+    "system_family",
+    "rules_profile",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "tone",
+    "constraints",
+    "mechanics_profile",
+    "release",
+    "rules_specific",
+    "combat_intensity",
+    "entity_counts",
+    "craft_references"
+  ],
+  "max_context_chars": 2000000,
+  "validators": [
+    "schema",
+    "domain"
+  ],
+  "audit_sections": {
+    "mode": "per_chapter",
+    "note": "0.11.3: one pass per chapter (its chapter text, NPC, creature and item names and lore, maps and handouts) and one cross-section pass (rules basis, compatibility and license labels, world, faction names, marketing, Kickstarter, storefront, art direction, index). Unchanged passes are reused by fingerprint.",
+    "sectioned": [
+      "story.chapters",
+      "npcs.npcs",
+      "creatures.creatures",
+      "items.items",
+      "maps.maps",
+      "handouts.handouts"
+    ],
+    "referenced": []
+  }
+}

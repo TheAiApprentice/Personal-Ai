@@ -1,0 +1,86 @@
+{
+  "type": "object",
+  "properties": {
+    "elevator_pitch": {
+      "type": "string"
+    },
+    "short_description": {
+      "type": "string"
+    },
+    "long_description": {
+      "type": "string"
+    },
+    "feature_bullets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "audience": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "deliverable_claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "enum": [
+              "book",
+              "maps",
+              "cards",
+              "handouts"
+            ]
+          },
+          "minimum_count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 500
+          },
+          "variant": {
+            "type": "string"
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "kind",
+          "minimum_count",
+          "variant"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "production_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "elevator_pitch",
+    "short_description",
+    "long_description",
+    "feature_bullets",
+    "audience",
+    "tags",
+    "deliverable_claims"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "18-marketing-copy output v0.11.1"
+}

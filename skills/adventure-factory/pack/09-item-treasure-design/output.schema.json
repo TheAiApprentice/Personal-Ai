@@ -1,0 +1,197 @@
+{
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "rarity": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "appearance": {
+            "type": "string"
+          },
+          "history": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "activation": {
+            "type": "string"
+          },
+          "mechanic": {
+            "type": "string"
+          },
+          "charges": {
+            "type": "string"
+          },
+          "recharge": {
+            "type": "string"
+          },
+          "drawback_or_cost": {
+            "type": "string"
+          },
+          "discovery": {
+            "type": "string"
+          },
+          "roleplay_hooks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "value_guidance": {
+            "type": "string"
+          },
+          "art_prompt": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "attunement": {
+            "type": "string",
+            "minLength": 1
+          },
+          "exact_rules_text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rules": {
+            "type": "object",
+            "properties": {
+              "activation": {
+                "type": "string",
+                "minLength": 1
+              },
+              "target": {
+                "type": "string",
+                "minLength": 1
+              },
+              "range_ft": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 10000
+              },
+              "duration": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uses": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000
+              },
+              "recharge": {
+                "type": "string",
+                "minLength": 1
+              },
+              "limitations": {
+                "type": "string",
+                "minLength": 1
+              },
+              "production_notes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "activation",
+              "target",
+              "range_ft",
+              "duration",
+              "uses",
+              "recharge",
+              "limitations"
+            ],
+            "additionalProperties": false
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "activation",
+          "appearance",
+          "art_prompt",
+          "charges",
+          "description",
+          "discovery",
+          "drawback_or_cost",
+          "history",
+          "mechanic",
+          "name",
+          "rarity",
+          "recharge",
+          "roleplay_hooks",
+          "type",
+          "value_guidance",
+          "id",
+          "attunement",
+          "exact_rules_text",
+          "rules"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "treasure_tables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "entries",
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "production_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "items",
+    "treasure_tables"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "09-item-treasure-design output v0.11.1"
+}

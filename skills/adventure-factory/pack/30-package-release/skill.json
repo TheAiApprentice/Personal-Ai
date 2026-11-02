@@ -1,0 +1,22 @@
+{
+  "id": "30-package-release",
+  "title": "Package Release",
+  "order": 35,
+  "kind": "builtin",
+  "role": "package",
+  "requires": [
+    "project",
+    "qa"
+  ],
+  "produces": [
+    "release_zip"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {},
+  "spec_fields": [],
+  "max_context_chars": 0,
+  "validators": [
+    "schema"
+  ]
+}

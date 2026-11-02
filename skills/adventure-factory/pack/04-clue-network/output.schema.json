@@ -1,0 +1,199 @@
+{
+  "type": "object",
+  "properties": {
+    "clue_web": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "clue": {
+            "type": "string"
+          },
+          "reveals": {
+            "type": "string"
+          },
+          "found_at_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "found_at_display": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "points_to_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "redundant_with": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "discovery_methods": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "check": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "ability_or_method": {
+                "type": "string",
+                "minLength": 1
+              },
+              "dc": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 40
+              },
+              "automatic_conditions": {
+                "type": "string"
+              },
+              "fail_forward": {
+                "type": "string",
+                "minLength": 1
+              },
+              "production_notes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "ability_or_method",
+              "dc",
+              "automatic_conditions",
+              "fail_forward"
+            ],
+            "additionalProperties": false
+          },
+          "player_facing": {
+            "type": "boolean"
+          },
+          "backup_route": {
+            "type": "string"
+          },
+          "backup_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "backup_route",
+          "check",
+          "clue",
+          "discovery_methods",
+          "found_at_display",
+          "found_at_refs",
+          "id",
+          "player_facing",
+          "points_to_refs",
+          "redundant_with",
+          "reveals",
+          "backup_refs"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "critical_revelations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "revelation": {
+            "type": "string"
+          },
+          "min_clues": {
+            "type": "integer"
+          },
+          "clue_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "clue_ids",
+          "id",
+          "min_clues",
+          "revelation"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "false_leads": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "fail_forward_routes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "production_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "clue_web",
+    "critical_revelations",
+    "false_leads",
+    "fail_forward_routes"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "04-clue-network output v0.11.1"
+}

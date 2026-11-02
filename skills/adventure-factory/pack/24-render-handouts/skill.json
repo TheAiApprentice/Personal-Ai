@@ -1,0 +1,21 @@
+{
+  "id": "24-render-handouts",
+  "title": "Render Handouts",
+  "order": 27,
+  "kind": "builtin",
+  "role": "render_handouts",
+  "requires": [
+    "project"
+  ],
+  "produces": [
+    "handout_files"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {},
+  "spec_fields": [],
+  "max_context_chars": 0,
+  "validators": [
+    "schema"
+  ]
+}

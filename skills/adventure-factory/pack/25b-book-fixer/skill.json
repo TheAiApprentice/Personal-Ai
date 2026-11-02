@@ -1,0 +1,22 @@
+{
+  "id": "25b-book-fixer",
+  "title": "Book Fixer / Customer Proof",
+  "version": "0.11.1",
+  "order": 30,
+  "kind": "builtin",
+  "role": "book_fixer",
+  "requires": [
+    "project",
+    "book_files",
+    "card_files",
+    "handout_files",
+    "foundry_files"
+  ],
+  "produces": [
+    "book_proof"
+  ],
+  "output_schema": "output.schema.json",
+  "context": {},
+  "spec_fields": [],
+  "max_context_chars": 900000
+}

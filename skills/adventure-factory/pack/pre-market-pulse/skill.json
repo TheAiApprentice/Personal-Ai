@@ -1,0 +1,16 @@
+{
+  "id": "pre-market-pulse",
+  "title": "Market Pulse",
+  "version": "0.11.1",
+  "order": 1,
+  "kind": "builtin",
+  "role": "market_pulse",
+  "requires": [],
+  "produces": [
+    "market_pulse"
+  ],
+  "output_schema": "output.schema.json",
+  "context": {},
+  "spec_fields": [],
+  "max_context_chars": 150000
+}

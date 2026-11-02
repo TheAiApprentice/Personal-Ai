@@ -1,0 +1,45 @@
+{
+  "id": "01-world-bible",
+  "title": "World Bible",
+  "order": 3,
+  "kind": "ai",
+  "role": "world",
+  "requires": [
+    "brief"
+  ],
+  "produces": [
+    "world"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {
+    "brief": [
+      "premise",
+      "themes",
+      "content_boundaries",
+      "rules_basis",
+      "tone",
+      "visual_direction"
+    ]
+  },
+  "spec_fields": [
+    "title",
+    "concept",
+    "system_family",
+    "rules_profile",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "tone",
+    "constraints",
+    "rules_specific",
+    "combat_intensity",
+    "entity_counts",
+    "craft_references"
+  ],
+  "max_context_chars": 150000,
+  "validators": [
+    "schema",
+    "domain"
+  ]
+}

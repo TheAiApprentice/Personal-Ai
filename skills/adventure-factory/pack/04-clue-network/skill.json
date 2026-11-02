@@ -1,0 +1,52 @@
+{
+  "id": "04-clue-network",
+  "title": "Clue Network",
+  "order": 6,
+  "kind": "ai",
+  "role": "clues",
+  "requires": [
+    "brief",
+    "world",
+    "story"
+  ],
+  "produces": [
+    "clues"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {
+    "brief": [
+      "minimum_clue_routes"
+    ],
+    "world": [
+      "secrets"
+    ],
+    "story": [
+      "plot_spine",
+      "entity_registry",
+      "chapters",
+      "endings"
+    ]
+  },
+  "spec_fields": [
+    "title",
+    "concept",
+    "system_family",
+    "rules_profile",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "tone",
+    "constraints",
+    "mechanics_profile",
+    "rules_specific",
+    "combat_intensity",
+    "entity_counts",
+    "craft_references"
+  ],
+  "max_context_chars": 150000,
+  "validators": [
+    "schema",
+    "domain"
+  ]
+}

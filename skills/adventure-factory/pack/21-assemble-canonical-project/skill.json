@@ -1,0 +1,42 @@
+{
+  "id": "21-assemble-canonical-project",
+  "title": "Assemble Canonical Project",
+  "order": 24,
+  "kind": "builtin",
+  "role": "assemble",
+  "requires": [
+    "brief",
+    "world",
+    "factions",
+    "story",
+    "clues",
+    "npcs",
+    "locations",
+    "encounters",
+    "creatures",
+    "items",
+    "maps",
+    "handouts",
+    "art_direction",
+    "mechanics_audit",
+    "continuity_audit",
+    "gm_audit",
+    "commercial_audit",
+    "polish",
+    "marketing",
+    "kickstarter",
+    "storefront",
+    "repair_control"
+  ],
+  "produces": [
+    "project"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {},
+  "spec_fields": [],
+  "max_context_chars": 0,
+  "validators": [
+    "schema"
+  ]
+}

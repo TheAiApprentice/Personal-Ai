@@ -1,0 +1,59 @@
+{
+  "id": "11-handout-design",
+  "title": "Player Handouts",
+  "order": 13,
+  "kind": "ai",
+  "role": "handouts",
+  "requires": [
+    "brief",
+    "story",
+    "clues",
+    "npcs",
+    "items"
+  ],
+  "produces": [
+    "handouts"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {
+    "brief": [
+      "tone"
+    ],
+    "story": [
+      "entity_registry"
+    ],
+    "clues": [
+      "clue_web"
+    ],
+    "npcs": [
+      "npcs.*.id",
+      "npcs.*.name",
+      "npcs.*.speech_style"
+    ],
+    "items": [
+      "items.*.id",
+      "items.*.name"
+    ]
+  },
+  "spec_fields": [
+    "title",
+    "concept",
+    "system_family",
+    "rules_profile",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "tone",
+    "constraints",
+    "rules_specific",
+    "combat_intensity",
+    "entity_counts",
+    "craft_references"
+  ],
+  "max_context_chars": 900000,
+  "validators": [
+    "schema",
+    "domain"
+  ]
+}

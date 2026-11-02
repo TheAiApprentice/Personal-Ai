@@ -1,0 +1,158 @@
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "premise": {
+      "type": "string"
+    },
+    "genre": {
+      "type": "string"
+    },
+    "tone": {
+      "type": "string"
+    },
+    "level_band": {
+      "type": "string"
+    },
+    "party_size": {
+      "type": "string"
+    },
+    "play_time_hours": {
+      "type": "integer"
+    },
+    "product_size": {
+      "type": "string"
+    },
+    "quality_mode": {
+      "type": "string"
+    },
+    "themes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "content_boundaries": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0
+    },
+    "must_include": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "must_avoid": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "commercial_goal": {
+      "type": "string"
+    },
+    "visual_direction": {
+      "type": "string"
+    },
+    "map_needs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "expected_deliverables": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "rules_basis": {
+      "type": "string"
+    },
+    "compatibility_label": {
+      "type": "string"
+    },
+    "license_basis": {
+      "type": "string"
+    },
+    "advancement_method": {
+      "type": "string"
+    },
+    "target_word_count_range": {
+      "type": "string"
+    },
+    "target_page_count_range": {
+      "type": "string"
+    },
+    "rules_profile": {
+      "enum": [
+        "system-neutral",
+        "5e"
+      ]
+    },
+    "minimum_clue_routes": {
+      "type": "integer",
+      "minimum": 2,
+      "maximum": 5
+    },
+    "production_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rules_specific": {
+      "type": "boolean"
+    },
+    "combat_intensity": {
+      "enum": [
+        "low",
+        "standard",
+        "high"
+      ]
+    }
+  },
+  "required": [
+    "title",
+    "premise",
+    "genre",
+    "tone",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "product_size",
+    "quality_mode",
+    "themes",
+    "content_boundaries",
+    "must_include",
+    "must_avoid",
+    "commercial_goal",
+    "visual_direction",
+    "map_needs",
+    "expected_deliverables",
+    "rules_basis",
+    "compatibility_label",
+    "license_basis",
+    "advancement_method",
+    "target_word_count_range",
+    "target_page_count_range",
+    "rules_profile",
+    "minimum_clue_routes",
+    "rules_specific",
+    "combat_intensity"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "00-project-intake output v0.11.1"
+}

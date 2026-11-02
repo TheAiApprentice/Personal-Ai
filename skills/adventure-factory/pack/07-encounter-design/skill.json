@@ -1,0 +1,102 @@
+{
+  "id": "07-encounter-design",
+  "title": "Encounter Design",
+  "order": 9,
+  "kind": "ai",
+  "role": "encounters",
+  "requires": [
+    "brief",
+    "story",
+    "npcs",
+    "locations",
+    "clues"
+  ],
+  "produces": [
+    "encounters"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {
+    "brief": [
+      "rules_profile",
+      "level_band",
+      "party_size"
+    ],
+    "story": [
+      "chapters",
+      "entity_registry"
+    ],
+    "npcs": [
+      "npcs.*.id",
+      "npcs.*.name",
+      "npcs.*.combat_capable",
+      "npcs.*.creature_ref"
+    ],
+    "locations": [
+      "locations.*.id",
+      "locations.*.name",
+      "locations.*.rooms"
+    ],
+    "clues": [
+      "clue_web"
+    ]
+  },
+  "spec_fields": [
+    "title",
+    "concept",
+    "system_family",
+    "rules_profile",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "tone",
+    "constraints",
+    "mechanics_profile",
+    "rules_specific",
+    "combat_intensity",
+    "entity_counts",
+    "craft_references"
+  ],
+  "max_context_chars": 900000,
+  "validators": [
+    "schema",
+    "domain"
+  ],
+  "execution_strategy": "per_entity",
+  "registry_kind": "encounter",
+  "entity_context": {
+    "mode": "scoped",
+    "note": "0.11.3: each encounter call reads its own chapter and level, the NPCs and clues they mention, and the registry. Every field here is also in context, so receipts paid for with the full context stay valid.",
+    "global": {
+      "brief": [
+        "rules_profile",
+        "level_band",
+        "party_size"
+      ],
+      "story": [
+        "entity_registry"
+      ]
+    },
+    "home": {
+      "story.chapters": [
+        "*"
+      ],
+      "locations.locations": [
+        "id",
+        "name",
+        "rooms"
+      ]
+    },
+    "referenced": {
+      "npcs.npcs": [
+        "id",
+        "name",
+        "combat_capable",
+        "creature_ref"
+      ],
+      "clues.clue_web": [
+        "*"
+      ]
+    }
+  }
+}

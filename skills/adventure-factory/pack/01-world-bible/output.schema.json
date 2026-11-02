@@ -1,0 +1,150 @@
+{
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "string"
+    },
+    "themes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "content_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "background": {
+      "type": "string"
+    },
+    "inciting_incident": {
+      "type": "string"
+    },
+    "stakes": {
+      "type": "string"
+    },
+    "hooks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "secrets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "lore": {
+      "type": "object",
+      "properties": {
+        "everyone_knows": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0
+        },
+        "locals_know": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0
+        },
+        "scholars_know": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0
+        },
+        "dm_truth": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0
+        },
+        "production_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "everyone_knows",
+        "locals_know",
+        "scholars_know",
+        "dm_truth"
+      ],
+      "additionalProperties": false
+    },
+    "visual_style": {
+      "type": "object",
+      "properties": {
+        "palette": {
+          "type": "string"
+        },
+        "architecture": {
+          "type": "string"
+        },
+        "clothing": {
+          "type": "string"
+        },
+        "magic": {
+          "type": "string"
+        },
+        "monsters": {
+          "type": "string"
+        },
+        "lighting": {
+          "type": "string"
+        },
+        "production_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "palette",
+        "architecture",
+        "clothing",
+        "magic",
+        "monsters",
+        "lighting"
+      ],
+      "additionalProperties": false
+    },
+    "production_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "summary",
+    "themes",
+    "content_notes",
+    "background",
+    "inciting_incident",
+    "stakes",
+    "hooks",
+    "secrets",
+    "lore",
+    "visual_style"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "01-world-bible output v0.11.1"
+}

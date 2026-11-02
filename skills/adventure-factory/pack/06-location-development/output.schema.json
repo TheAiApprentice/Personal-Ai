@@ -1,0 +1,336 @@
+{
+  "type": "object",
+  "properties": {
+    "locations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "history": {
+            "type": "string"
+          },
+          "current_situation": {
+            "type": "string"
+          },
+          "atmosphere": {
+            "type": "object",
+            "properties": {
+              "sight": {
+                "type": "string"
+              },
+              "sound": {
+                "type": "string"
+              },
+              "smell": {
+                "type": "string"
+              },
+              "temperature": {
+                "type": "string"
+              },
+              "production_notes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "sight",
+              "sound",
+              "smell",
+              "temperature"
+            ],
+            "additionalProperties": false
+          },
+          "arrival_read_aloud": {
+            "type": "string"
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "secrets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "clues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "occupants": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "treasure": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "consequences": {
+            "type": "object",
+            "properties": {
+              "destroyed": {
+                "type": "string"
+              },
+              "occupied": {
+                "type": "string"
+              },
+              "cleansed": {
+                "type": "string"
+              },
+              "robbed": {
+                "type": "string"
+              },
+              "ignored": {
+                "type": "string"
+              },
+              "production_notes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "destroyed",
+              "occupied",
+              "cleansed",
+              "robbed",
+              "ignored"
+            ],
+            "additionalProperties": false
+          },
+          "rooms": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "purpose": {
+                  "type": "string"
+                },
+                "width": {
+                  "type": "integer"
+                },
+                "height": {
+                  "type": "integer"
+                },
+                "ceiling": {
+                  "type": "string"
+                },
+                "lighting": {
+                  "type": "string"
+                },
+                "doors": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0
+                },
+                "read_aloud": {
+                  "type": "string"
+                },
+                "contents": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0
+                },
+                "interactive_features": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0
+                },
+                "hidden_elements": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0
+                },
+                "clues": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0
+                },
+                "treasure": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 0
+                },
+                "hazards": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0
+                },
+                "encounter_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 0
+                },
+                "development": {
+                  "type": "string"
+                },
+                "connections": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0
+                },
+                "clue_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 0
+                },
+                "creature_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 0
+                },
+                "item_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 0
+                },
+                "hazard_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 0
+                },
+                "production_notes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "ceiling",
+                "clues",
+                "connections",
+                "contents",
+                "development",
+                "doors",
+                "encounter_refs",
+                "hazards",
+                "height",
+                "hidden_elements",
+                "id",
+                "interactive_features",
+                "lighting",
+                "name",
+                "purpose",
+                "read_aloud",
+                "treasure",
+                "width",
+                "clue_refs",
+                "creature_refs",
+                "item_refs",
+                "hazard_refs"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0
+          },
+          "map_required": {
+            "type": "boolean"
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "arrival_read_aloud",
+          "atmosphere",
+          "clues",
+          "consequences",
+          "current_situation",
+          "features",
+          "history",
+          "id",
+          "name",
+          "occupants",
+          "rooms",
+          "secrets",
+          "treasure",
+          "type",
+          "map_required"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "production_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "locations"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "06-location-development output v0.11.1"
+}

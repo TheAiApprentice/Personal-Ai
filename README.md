@@ -4,7 +4,9 @@
 
 Everything here is real and in daily use. It was cleaned of private data before it went up, and a privacy scan checks the whole folder.
 
-- **28 skills**, each with a `SKILL.md` and a machine-readable `manifest.json`, in [`skills/`](skills/)
+- **29 skills**, each with a `SKILL.md` and a machine-readable `manifest.json`, in [`skills/`](skills/). One of them,
+  [`adventure-factory`](skills/adventure-factory/SKILL.md), is a pack of 36 skills that makes a tabletop adventure book
+- **1 app**: [`apps/dnd-sheet/`](apps/dnd-sheet/README.md), a one-file D&D 5e character sheet for your phone (one-tap play, level up, no dice rolling)
 - **5 tools with 280 tests (19 of them run on Windows only)**, in [`tools/`](tools/): a guard hook, a memory system, a health check, a GPU-time mailbox and a privacy scan
 - **Standard library Python plus pytest.** No accounts, no keys, no network needed to run the tests
 
@@ -28,7 +30,10 @@ with other work without getting in the way. This repo is those parts:
 ## What's in here
 
 ```
-skills/                 28 skills, one folder each (SKILL.md + manifest.json + any scripts)
+skills/                 29 skills, one folder each (SKILL.md + manifest.json + any scripts)
+  adventure-factory/    the adventure-book skill pack: 35 stages and a master in pack/
+apps/
+  dnd-sheet/            the phone character sheet (index.html), its README and node tests
 tools/
   guard/                PreToolUse guard hook and its 201 tests
   memory/               memory store, recall and the decision log
@@ -59,6 +64,8 @@ Python 3.11 or newer, and pytest. Windows is the main target.
 
 Expected: the scan passes with 0 findings, pytest reports **280 passed on Windows; on Mac and Linux it reports 261 passed and 19 skipped (Windows-only path tests)** (201 guard, 39 privacy scan, 34 GPU mailbox, 3 memory, 3 health check), and the health check
 ends in `ALL OK`. Every default path points inside this folder.
+
+The phone app has its own tests (Node.js 18 or newer, no packages): `node apps/dnd-sheet/tests/run_all.js` ends in `all 4 test files passed`.
 Runtime data (the memory database, the mailbox) goes under `data/`, which is in `.gitignore` and never shipped.
 
 ## What's not here
@@ -66,6 +73,7 @@ Runtime data (the memory database, the mailbox) goes under `data/`, which is in 
 - **No data.** No memory database, no chat logs, no keys. The code creates empty ones on first use.
 - **16 imported skills** from other people's kits are left out, because they are not mostly our own work.
   [`skills/README.md`](skills/README.md) lists them and why.
+- **The Adventure Factory application.** The `adventure-factory` skills are here; the code that runs them and checks every output is not.
 - **Some helper scripts** that a few skills call (a price watcher, a miner checker, a ledger) are not included.
   Those skills say so at the top and describe what the helper does.
 

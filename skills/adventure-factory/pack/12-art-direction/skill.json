@@ -1,0 +1,65 @@
+{
+  "id": "12-art-direction",
+  "title": "Art Direction",
+  "order": 14,
+  "kind": "ai",
+  "role": "art_direction",
+  "requires": [
+    "world",
+    "npcs",
+    "creatures",
+    "items",
+    "maps"
+  ],
+  "produces": [
+    "art_direction"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {
+    "world": [
+      "visual_style"
+    ],
+    "npcs": [
+      "npcs.*.id",
+      "npcs.*.name",
+      "npcs.*.appearance",
+      "npcs.*.portrait_prompt"
+    ],
+    "creatures": [
+      "creatures.*.id",
+      "creatures.*.name",
+      "creatures.*.description"
+    ],
+    "items": [
+      "items.*.id",
+      "items.*.name",
+      "items.*.appearance"
+    ],
+    "maps": [
+      "maps.*.id",
+      "maps.*.theme",
+      "maps.*.prompt"
+    ]
+  },
+  "spec_fields": [
+    "title",
+    "concept",
+    "system_family",
+    "rules_profile",
+    "level_band",
+    "party_size",
+    "play_time_hours",
+    "tone",
+    "constraints",
+    "rules_specific",
+    "combat_intensity",
+    "entity_counts",
+    "craft_references"
+  ],
+  "max_context_chars": 900000,
+  "validators": [
+    "schema",
+    "domain"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "type": "object",
+  "properties": {
+    "repair_control": {
+      "type": "object",
+      "properties": {
+        "rounds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "unresolved": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "suggestions": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "skipped_patches": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "audit_passes": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "rounds",
+        "changes",
+        "unresolved",
+        "history",
+        "suggestions",
+        "skipped_patches"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "repair_control"
+  ],
+  "additionalProperties": false
+}

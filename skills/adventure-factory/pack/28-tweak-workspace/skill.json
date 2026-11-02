@@ -1,0 +1,21 @@
+{
+  "id": "28-tweak-workspace",
+  "title": "Creator Tweak Workspace",
+  "order": 33,
+  "kind": "builtin",
+  "role": "tweak",
+  "requires": [
+    "project"
+  ],
+  "produces": [
+    "tweak_files"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {},
+  "spec_fields": [],
+  "max_context_chars": 0,
+  "validators": [
+    "schema"
+  ]
+}

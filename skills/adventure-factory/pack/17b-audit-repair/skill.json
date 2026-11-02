@@ -1,0 +1,40 @@
+{
+  "id": "17b-audit-repair",
+  "title": "Audit-Repair Controller",
+  "order": 23,
+  "kind": "builtin",
+  "role": "repair",
+  "requires": [
+    "brief",
+    "world",
+    "factions",
+    "story",
+    "clues",
+    "npcs",
+    "locations",
+    "encounters",
+    "creatures",
+    "items",
+    "maps",
+    "handouts",
+    "art_direction",
+    "mechanics_audit",
+    "continuity_audit",
+    "gm_audit",
+    "commercial_audit",
+    "polish"
+  ],
+  "produces": [
+    "repair_control"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {},
+  "spec_fields": [],
+  "max_context_chars": 0,
+  "validators": [
+    "schema",
+    "bounded_repair",
+    "locks"
+  ]
+}

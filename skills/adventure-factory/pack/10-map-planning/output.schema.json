@@ -1,0 +1,376 @@
+{
+  "type": "object",
+  "properties": {
+    "maps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "location_ref": {
+            "type": "string"
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 18,
+            "maximum": 160
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 18,
+            "maximum": 160
+          },
+          "theme": {
+            "type": "string"
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "player_notes": {
+            "type": "string"
+          },
+          "gm_notes": {
+            "type": "string"
+          },
+          "terrain_features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "landmarks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "hazards": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "rooms": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "name": {
+                  "type": "string"
+                },
+                "purpose": {
+                  "type": "string"
+                },
+                "x": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 160
+                },
+                "y": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 160
+                },
+                "w": {
+                  "type": "integer",
+                  "minimum": 4,
+                  "maximum": 80
+                },
+                "h": {
+                  "type": "integer",
+                  "minimum": 4,
+                  "maximum": 80
+                },
+                "connections": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 0
+                },
+                "props": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0
+                },
+                "hazards": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 0
+                },
+                "secret": {
+                  "type": "boolean"
+                },
+                "terrain": {
+                  "type": "string"
+                },
+                "production_notes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "connections",
+                "h",
+                "hazards",
+                "id",
+                "name",
+                "props",
+                "purpose",
+                "secret",
+                "terrain",
+                "w",
+                "x",
+                "y"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "scale_feet": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "production_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tactical_features": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "ledge",
+                    "walkway",
+                    "water",
+                    "cover",
+                    "hazard",
+                    "control",
+                    "stairs",
+                    "difficult_terrain"
+                  ]
+                },
+                "squares": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "uniqueItems": true
+                },
+                "point": {
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "minItems": 2,
+                      "maxItems": 2
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "visibility": {
+                  "enum": [
+                    "public",
+                    "gm"
+                  ]
+                },
+                "room_ref": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "type",
+                "squares",
+                "point",
+                "label",
+                "visibility",
+                "room_ref"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "corridors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "from_ref": {
+                  "type": "string"
+                },
+                "to_ref": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "minItems": 2
+                },
+                "width": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4
+                },
+                "secret": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "from_ref",
+                "to_ref",
+                "path",
+                "width",
+                "secret"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "doors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "a": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "b": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "secret": {
+                  "type": "boolean"
+                },
+                "state": {
+                  "enum": [
+                    "open",
+                    "closed",
+                    "locked"
+                  ]
+                },
+                "label": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "a",
+                "b",
+                "secret",
+                "state",
+                "label"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "gm_notes",
+          "hazards",
+          "height",
+          "kind",
+          "landmarks",
+          "location_ref",
+          "name",
+          "player_notes",
+          "prompt",
+          "rooms",
+          "terrain_features",
+          "theme",
+          "width",
+          "id",
+          "seed",
+          "tactical_features",
+          "corridors",
+          "doors"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "production_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "maps"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "10-map-planning output v0.11.1"
+}

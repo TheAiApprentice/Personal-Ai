@@ -1,0 +1,21 @@
+{
+  "id": "22-render-maps",
+  "title": "Render Maps",
+  "order": 25,
+  "kind": "builtin",
+  "role": "render_maps",
+  "requires": [
+    "project"
+  ],
+  "produces": [
+    "map_files"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {},
+  "spec_fields": [],
+  "max_context_chars": 0,
+  "validators": [
+    "schema"
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "type": "object",
+  "properties": {
+    "master_style": {
+      "type": "string"
+    },
+    "palette": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "rendering_style": {
+      "type": "string"
+    },
+    "architecture": {
+      "type": "string"
+    },
+    "clothing": {
+      "type": "string"
+    },
+    "materials": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "lighting": {
+      "type": "string"
+    },
+    "magic_language": {
+      "type": "string"
+    },
+    "monster_design_language": {
+      "type": "string"
+    },
+    "do_not_include": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    },
+    "cover_spec": {
+      "type": "object",
+      "properties": {
+        "subject": {
+          "type": "string"
+        },
+        "title_space": {
+          "type": "string"
+        },
+        "production_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "subject",
+        "title_space"
+      ],
+      "additionalProperties": false
+    },
+    "chapter_art_specs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0
+    },
+    "npc_art_specs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0
+    },
+    "creature_art_specs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0
+    },
+    "item_art_specs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0
+    },
+    "map_render_style": {
+      "type": "string"
+    },
+    "production_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "master_style",
+    "palette",
+    "rendering_style",
+    "architecture",
+    "clothing",
+    "materials",
+    "lighting",
+    "magic_language",
+    "monster_design_language",
+    "do_not_include",
+    "cover_spec",
+    "chapter_art_specs",
+    "npc_art_specs",
+    "creature_art_specs",
+    "item_art_specs",
+    "map_render_style"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "12-art-direction output v0.11.1"
+}

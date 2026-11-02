@@ -1,10 +1,12 @@
 # Skills
 
-28 skills, each in its own folder with a `SKILL.md` (the instructions an AI follows) and a `manifest.json` (what it is, what it may touch, what it costs, when it needs the owner's approval, where it came from). Scripts a skill needs sit beside it. Every skill here was cleaned of private data before it was put in this folder.
+29 skills, each in its own folder with a `SKILL.md` (the instructions an AI follows) and a `manifest.json` (what it is, what it may touch, what it costs, when it needs the owner's approval, where it came from). Scripts a skill needs sit beside it. Every skill here was cleaned of private data before it was put in this folder.
 
-- **Built here** (26): written for this project.
+- **Built here** (27): written for this project. One of them, `adventure-factory`, is a skill pack: its folder holds 36 skills (35 stages and a master) in `pack/`.
 - **Adapted** (2): `devil` and `wipe` started as earlier skills and were reworked here (the report format of `devil`; the Recycle Bin mover and its gates in `wipe`).
 - **Not included:** the 16 skills imported from other people's kits (see below), the 6 on-hold setup guides (part of those 16), and `personal-bot` (a chat-bot client, tied to one private chat).
+
+The `adventure-factory` pack is written for its own application, which runs the stages and checks every output against the stage's schema. That application code is not in this repo.
 
 Several skills drive small helper scripts that live outside this repo (for example the price watcher, the miner checker, the ledger). Those skills say so at the top; their steps describe what the helper does so it can be rebuilt. The code that is shipped and tested is under `../tools/`: the guard hook, the memory system, the health check and the GPU mailbox.
 
@@ -14,6 +16,7 @@ The manifest format is `pai-skill-manifest/1`. Permissions below are read straig
 
 | Skill | What it does | Permissions |
 |---|---|---|
+| `adventure-factory` | Makes a complete, playable tabletop adventure book from a brief through 35 chained skills and a master ([pack](adventure-factory/pack/README.md)). | reads files, writes files, network, runs code, spends money |
 | `animation-qa` | Checks Blender animation with numbers first (foot slide, camera jerk, ray blocks), then by eye on contact sheets. | reads files, writes files, runs code |
 | `blender-recorded-build` | Runs a Blender build as one open window with every pass recorded as a teaching round. | reads files, writes files, runs code |
 | `book-scan` | Reads a whole book safely and returns a ranked list of only the new game ideas in it. | reads files, writes files, runs code |

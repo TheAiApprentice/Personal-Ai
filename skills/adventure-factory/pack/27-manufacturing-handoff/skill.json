@@ -1,0 +1,21 @@
+{
+  "id": "27-manufacturing-handoff",
+  "title": "Manufacturing Handoff",
+  "order": 32,
+  "kind": "builtin",
+  "role": "manufacturing",
+  "requires": [
+    "project"
+  ],
+  "produces": [
+    "manufacturing_files"
+  ],
+  "version": "0.11.1",
+  "output_schema": "output.schema.json",
+  "context": {},
+  "spec_fields": [],
+  "max_context_chars": 0,
+  "validators": [
+    "schema"
+  ]
+}
