@@ -17,7 +17,12 @@ This copy has no characters built in. On first open you see a made-up example ch
   or down, and a healing potion becomes a one-tap button.
 - **Level up.** One tap takes a character to the next level from the class table: hit points (average or the number you rolled),
   features, resources, spell slots, subclass at level 3, Ability Score Improvements and the Epic Boon. One step of undo.
-  Classes it knows so far: **Monk, Barbarian, Artificer**. Other classes still work; change their level by hand on the Sheet tab.
+  Classes it knows: all 12 of the 2024 Player's Handbook, **Barbarian, Bard, Cleric, Druid, Fighter, Monk, Paladin, Ranger, Rogue,
+  Sorcerer, Warlock, Wizard**, plus the **Artificer** (2024-compatible). Each comes with one subclass the app fills in for you; pick
+  "Other" to type a different one (its features are then not added automatically). Spell slots follow the full- and half-caster
+  tables, the Warlock gets Pact Magic, and class resources (Rage, Focus Points, Sneak Attack dice, Second Wind and Action Surge,
+  Channel Divinity, Bardic Inspiration, Wild Shape, Sorcery Points, Lay on Hands and the rest) land on the resource bar and as
+  one-tap buttons. A homebrew or third-party class still works; change its level by hand on the Sheet tab.
 - **Everything else on a sheet.** Abilities, saves, skills (with expertise), AC, initiative, speed, conditions, exhaustion, death saves,
   spells and slots, inventory, money, notes.
 - **Sheet import** (Roster tab, "Upload a sheet"): a character `.json` file in this app's format, or a PDF with form fields such as the
@@ -60,8 +65,10 @@ Reading a photo, a scan or a flat PDF (no form fields) needs the Claude artifact
 - The app's code is under the MIT licence of this repository (see [`LICENSE`](../../LICENSE)).
 - **SRD 5.2.** This work includes material from the System Reference Document 5.2 ("SRD 5.2") by Wizards of the Coast LLC,
   available at https://www.dndbeyond.com/srd. The SRD 5.2 is licensed under the Creative Commons Attribution 4.0 International
-  License, available at https://creativecommons.org/licenses/by/4.0/legalcode. The Monk and Barbarian core features and numbers
-  follow the SRD 5.2; the descriptions are short paraphrases.
+  License, available at https://creativecommons.org/licenses/by/4.0/legalcode. The core features and numbers of the twelve
+  Player's Handbook classes follow the SRD 5.2, and so do the subclasses College of Lore, Life Domain, Circle of the Land,
+  Champion, Warrior of the Open Hand, Oath of Devotion, Hunter, Thief, Draconic Sorcery, Fiend Patron and Evoker; the
+  descriptions are short paraphrases.
 - **Not in the SRD.** Path of the Wild Heart (Player's Handbook 2024) and the Artificer are not SRD content. For those, the app keeps
   only feature names, levels and the numbers it needs, with one-line descriptions in our own words. You need your own book for the
   full text.

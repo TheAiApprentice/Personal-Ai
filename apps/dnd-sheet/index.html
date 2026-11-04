@@ -356,7 +356,7 @@ function sanitizeCharacter(raw) {
     return { name: str(s && s.name, 120), level: (lv === null || lv === undefined || lv === "") ? null : clamp(toInt(lv, 0), 0, 9), prepared: !!(s && s.prepared) };
   }).filter(function (s) { return s.name; });
   c.resources = (Array.isArray(r.resources) ? r.resources : []).slice(0, 40).map(function (x) {
-    var mx = clamp(toInt(x && x.max, 1), 0, 99);
+    var mx = clamp(toInt(x && x.max, 1), 0, 999);   /* 999: a level 20 Paladin's Lay on Hands pool is 100 */
     return { name: str(x && x.name, 80), key: slugId(x && x.key), shortBack: clamp(toInt(x && x.shortBack, 0), 0, 99), max: mx, used: clamp(toInt(x && x.used, 0), 0, mx), reset: x && x.reset === "short" ? "short" : "long" };
   });
   c.edition = str(r.edition, 8);
@@ -1079,6 +1079,9 @@ function resetToggles(c) { c.toggles = {}; return c; }
    its entries are names, levels and one-line descriptions in our own words. Artificer (Forge of the Artificer) is NOT in the SRD, so only feature
    names, levels and the numbers the app needs are stored, with one-line descriptions in our own words. Any number we
    could not confirm carries chk:true and shows "[check book]" on the sheet.
+   Bard, Cleric, Druid, Fighter, Paladin, Ranger, Rogue, Sorcerer, Warlock and Wizard (Nov 3) follow the SRD 5.2 the same
+   way, each with its SRD subclass (College of Lore, Life Domain, Circle of the Land, Champion, Oath of Devotion, Hunter,
+   Thief, Draconic Sorcery, Fiend Patron, Evoker): short paraphrases, numbers from the class tables.
    ===================================================================================================== */
 function luStep(p) { return function (L) { var v = p[0][1]; for (var i = 0; i < p.length; i++) if (L >= p[i][0]) v = p[i][1]; return v; }; }
 function luF(l, n, d, chk) { return { l: l, n: n, d: d, chk: !!chk }; }
@@ -1100,8 +1103,21 @@ function luChosen(ch, name) {
 }
 function luHas(ch, id) { return (ch.actions || []).some(function (a) { return a.id === id; }); }
 
-/* Half-caster slots by level (Artificer): rows are character levels 1-20, entries are slots of level 1, 2, 3 ... */
+/* Half-caster slots by level (Artificer, and the 2024 Paladin and Ranger, who cast from level 1): rows are character levels 1-20, entries are slots of level 1, 2, 3 ... */
 var LU_HALF = [[2], [2], [3], [3], [4, 2], [4, 2], [4, 3], [4, 3], [4, 3, 2], [4, 3, 2], [4, 3, 3], [4, 3, 3], [4, 3, 3, 1], [4, 3, 3, 1], [4, 3, 3, 2], [4, 3, 3, 2], [4, 3, 3, 3, 1], [4, 3, 3, 3, 1], [4, 3, 3, 3, 2], [4, 3, 3, 3, 2]];
+/* Full-caster slots by level (Bard, Cleric, Druid, Sorcerer, Wizard). */
+var LU_FULL = [[2], [3], [4, 2], [4, 3], [4, 3, 2], [4, 3, 3], [4, 3, 3, 1], [4, 3, 3, 2], [4, 3, 3, 3, 1], [4, 3, 3, 3, 2], [4, 3, 3, 3, 2, 1], [4, 3, 3, 3, 2, 1], [4, 3, 3, 3, 2, 1, 1], [4, 3, 3, 3, 2, 1, 1], [4, 3, 3, 3, 2, 1, 1, 1], [4, 3, 3, 3, 2, 1, 1, 1], [4, 3, 3, 3, 2, 1, 1, 1, 1], [4, 3, 3, 3, 3, 1, 1, 1, 1], [4, 3, 3, 3, 3, 2, 1, 1, 1], [4, 3, 3, 3, 3, 2, 2, 1, 1]];
+function luFull(L) { return LU_FULL[clamp(L, 1, 20) - 1]; }
+function luHalf(L) { return LU_HALF[clamp(L, 1, 20) - 1]; }
+/* Warlock Pact Magic: slots and their level, all back on a short rest (goes into the sheet's pact field). */
+var luPactN = luStep([[1, 1], [2, 2], [11, 3], [17, 4]]), luPactLv = luStep([[1, 1], [3, 2], [5, 3], [7, 4], [9, 5]]);
+/* Spell save DC and attack for a caster whose sheet has no spellcasting ability set yet. */
+function luCast(x, ab) { if (x.sdc == null) { x.sdc = 8 + x.pb + x.m[ab]; x.sat = x.pb + x.m[ab]; } }
+/* Lines from an old hand-written class section that record a player's own picks; kept under CHOICES MADE. */
+var LU_PICKS = /^(Expertise|Weapon Mastery|Fighting Style|Metamagic|Eldritch Invocations?|Pact Boon|Divine Order|Primal Order|Favored Enemy|Deft Explorer|Magical Secrets|Blessed Strikes|Elemental Fury|Land type|Draconic ancestry)\b/i;
+/* Prepared spells by level, shared by several classes. */
+var LU_PREP_FULL = luStep([[1, 4], [2, 5], [3, 6], [4, 7], [5, 9], [6, 10], [7, 11], [8, 12], [9, 14], [10, 15], [11, 16], [13, 17], [15, 18], [17, 19], [18, 20], [19, 21], [20, 22]]);
+var LU_PREP_HALF = luStep([[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [7, 7], [9, 9], [11, 10], [13, 11], [15, 12], [17, 14], [19, 15]]);
 
 var LU = {};
 
@@ -1373,6 +1389,584 @@ LU.artificer = {
   }
 };
 
+/* Shared text for the casters below. */
+function luSpellText(x, kind, ab) { return kind + ", " + ab + ". " + (x.cantrips ? x.cantrips + " cantrips, " : "") + x.prepared + " prepared spells. Save DC " + x.sdc + ", attack " + luNum(x.sat) + "."; }
+function luCastNotes(x, ab) { return "2024 rules. Spell save DC " + x.sdc + ", spell attack " + luNum(x.sat) + " (" + ab + "). "; }
+function luUpcast(from, maxSlot, fn) { var o = []; for (var lv = from; lv <= maxSlot; lv++) o.push({ level: lv, dmg: fn(lv), note: "" }); return o; }
+
+/* ---------------------------------------- BARD (SRD 5.2) ---------------------------------------- */
+LU.bard = {
+  name: "Bard", die: 8, asi: [4, 8, 12, 16], boon: 19, subLevel: 3, sa: "cha", carry: LU_PICKS,
+  legacy: [/^BARD\b/, /^COLLEGE OF /],
+  slots: luFull, cantrips: luStep([[1, 2], [4, 3], [10, 4]]), prepared: LU_PREP_FULL,
+  bdie: luStep([[1, 6], [5, 8], [10, 10], [15, 12]]),
+  x: function (c, x) { luCast(x, "cha"); x.bdie = this.bdie(x.L); x.bi = Math.max(1, x.m.cha); x.cantrips = this.cantrips(x.L); x.prepared = this.prepared(x.L); },
+  subs: {
+    lore: {
+      name: "College of Lore", match: /\blore\b/i,
+      feats: [
+        luF(3, "Bonus Proficiencies", "Proficiency in three skills of your choice."),
+        luF(3, "Cutting Words", function (x) { return "Reaction when a creature within 60 ft makes a damage roll or succeeds on a check or attack roll: spend a Bardic Inspiration and subtract its roll (d" + x.bdie + ")."; }),
+        luF(6, "Magical Discoveries", "Learn two spells from the Cleric, Druid or Wizard list; they are always prepared and count as Bard spells."),
+        luF(14, "Peerless Skill", function (x) { return "When you fail an ability check or attack roll, spend a Bardic Inspiration and add its roll (d" + x.bdie + "); if it still fails, the use is not spent."; })
+      ]
+    }
+  },
+  feats: [
+    luF(1, "Bardic Inspiration", function (x) { return "Bonus action: a creature within 60 ft gets a d" + x.bdie + " to add to one failed d20 Test in the next hour. " + x.bi + " uses (Cha mod, minimum 1), back on a long rest" + (x.L >= 5 ? " or a short rest" : "") + "."; }),
+    luF(1, "Spellcasting", function (x) { return luSpellText(x, "Full caster", "Charisma") + " Swap one spell when you gain a level."; }),
+    luF(2, "Expertise", "Expertise in two of your skill proficiencies."),
+    luF(2, "Jack of All Trades", function (x) { return "Add half your proficiency bonus (+" + Math.floor(x.pb / 2) + ") to ability checks that don't already use it."; }),
+    luF(3, "Bard Subclass", "Pick a Bard subclass; its features come at 3, 6 and 14."),
+    luF(5, "Font of Inspiration", "Bardic Inspiration also comes back on a short rest, and you can spend a spell slot to regain one use."),
+    luF(7, "Countercharm", "Reaction when you or a creature within 30 ft fails a save against Charmed or Frightened: it rerolls with advantage."),
+    luF(9, "Expertise", "Expertise in two more skills."),
+    luF(10, "Magical Secrets", "Your prepared spells can come from the Bard, Cleric, Druid and Wizard lists."),
+    luF(18, "Superior Inspiration", "When you roll Initiative, regain Bardic Inspiration uses until you have two if you have fewer."),
+    luF(19, "Epic Boon", "Take an Epic Boon feat."),
+    luF(20, "Words of Creation", "Power Word Heal and Power Word Kill are always prepared; each can also target a second creature within 10 ft of the first.")
+  ],
+  resources: function (c, x) { return [{ key: "bardic", name: "Bardic Inspiration (d" + x.bdie + ", 60 ft)", max: x.bi, reset: x.L >= 5 ? "short" : "long" }]; },
+  actions: function (c, x, sub) {
+    var a = [], L = x.L, d = "d" + x.bdie;
+    a.push({ id: "bardic-inspiration", name: "Bardic Inspiration", economy: "bonus", kind: "feature", cost: [{ res: "bardic", n: 1 }], dmg: "Inspiration die " + d, range: "A creature within 60 ft that can hear or see you", notes: "It can add the die to one failed d20 Test within the next hour, after seeing the roll." });
+    if (L >= 7) a.push({ id: "countercharm", name: "Countercharm", economy: "reaction", kind: "feature", range: "You or a creature within 30 ft", notes: "When the save against Charmed or Frightened fails: reroll it with advantage." });
+    if (sub === "lore" && L >= 3) a.push({ id: "cutting-words", name: "Cutting Words", economy: "reaction", kind: "feature", cost: [{ res: "bardic", n: 1 }], dmg: "Subtract 1" + d, range: "A creature within 60 ft", notes: "When it makes a damage roll, or succeeds on an ability check or attack roll." });
+    if (sub === "lore" && L >= 14) a.push({ id: "peerless-skill", name: "Peerless Skill", economy: "free", kind: "feature", cost: [{ res: "bardic", n: 1 }], dmg: "Add 1" + d, range: "Your failed check or attack roll", notes: "If it still fails, tap again to undo: the use is not spent." });
+    return a;
+  },
+  attackNotes: function (c, x) { return luCastNotes(x, "Charisma") + "Bardic Inspiration d" + x.bdie + ", " + x.bi + " uses." + (x.L >= 2 ? " Jack of All Trades +" + Math.floor(x.pb / 2) + "." : ""); }
+};
+
+/* ---------------------------------------- CLERIC (SRD 5.2) ---------------------------------------- */
+LU.cleric = {
+  name: "Cleric", die: 8, asi: [4, 8, 12, 16], boon: 19, subLevel: 3, sa: "wis", carry: LU_PICKS,
+  legacy: [/^CLERIC\b/, /^LIFE DOMAIN/],
+  slots: luFull, cantrips: luStep([[1, 3], [4, 4], [10, 5]]), prepared: LU_PREP_FULL,
+  cdn: luStep([[1, 0], [2, 2], [6, 3], [18, 4]]), spark: luStep([[1, 1], [7, 2], [13, 3], [18, 4]]),
+  x: function (c, x) { luCast(x, "wis"); x.cd = this.cdn(x.L); x.spark = this.spark(x.L); x.sear = Math.max(1, x.m.wis); x.cantrips = this.cantrips(x.L); x.prepared = this.prepared(x.L); },
+  subs: {
+    life: {
+      name: "Life Domain", match: /\blife\b/i,
+      spells: { 3: [["Aid", 2], ["Bless", 1], ["Cure Wounds", 1], ["Lesser Restoration", 2]], 5: [["Mass Healing Word", 3], ["Revivify", 3]], 7: [["Aura of Life", 4], ["Death Ward", 4]], 9: [["Greater Restoration", 5], ["Mass Cure Wounds", 5]] },
+      feats: [
+        luF(3, "Disciple of Life", "When a spell slot spell restores HP, each target gets 2 + the slot's level more."),
+        luF(3, "Life Domain Spells", "Aid, Bless, Cure Wounds and Lesser Restoration always prepared (more at 5, 7 and 9)."),
+        luF(3, "Preserve Life", function (x) { return "Magic action, one Channel Divinity: share up to " + 5 * x.L + " HP (5 x Cleric level) among Bloodied creatures within 30 ft, none above half its max."; }),
+        luF(6, "Blessed Healer", "When a spell slot spell of yours heals someone else, you heal 2 + the slot's level."),
+        luF(17, "Supreme Healing", "Dice you roll to restore HP with a spell or Channel Divinity count as their highest number.")
+      ]
+    }
+  },
+  feats: [
+    luF(1, "Spellcasting", function (x) { return luSpellText(x, "Full caster", "Wisdom") + " Change them on a long rest."; }),
+    luF(1, "Divine Order", "Pick Protector (martial weapons, heavy armor) or Thaumaturge (one more cantrip, + Wis mod to Arcana and Religion checks)."),
+    luF(2, "Channel Divinity", function (x) { return x.cd + " uses, one back on a short rest, all on a long rest. Divine Spark: heal or harm " + x.spark + "d8 + Wis. Turn Undead: Wis save DC " + x.sdc + "."; }),
+    luF(3, "Cleric Subclass", "Pick a Cleric subclass; its features come at 3, 6 and 17."),
+    luF(5, "Sear Undead", function (x) { return "Turn Undead also deals " + x.sear + "d8 radiant (Wis mod d8s) to each Undead that fails."; }),
+    luF(7, "Blessed Strikes", "Pick Divine Strike (once a turn, +1d8 radiant or necrotic on a weapon hit) or Potent Spellcasting (add Wis mod to Cleric cantrip damage)."),
+    luF(10, "Divine Intervention", "Magic action, once per long rest: cast any Cleric spell of 5th level or lower without a slot or material components."),
+    luF(14, "Improved Blessed Strikes", "Divine Strike becomes 2d8, or Potent Spellcasting also gives temp HP (twice Wis mod) when a cantrip deals damage."),
+    luF(19, "Epic Boon", "Take an Epic Boon feat."),
+    luF(20, "Greater Divine Intervention", "Divine Intervention can cast Wish; after that it needs 2d4 long rests to come back.")
+  ],
+  resources: function (c, x) {
+    var r = [];
+    if (x.L >= 2) r.push({ key: "cd", name: "Channel Divinity (Divine Spark " + x.spark + "d8" + luSign(x.m.wis) + ")", max: x.cd, reset: "long", shortBack: 1 });
+    if (x.L >= 10) r.push({ key: "intervention", name: "Divine Intervention (once per long rest)", max: 1, reset: "long" });
+    return r;
+  },
+  actions: function (c, x, sub) {
+    var a = [], L = x.L, sdc = x.sdc, sp = x.spark + "d8" + luSign(x.m.wis);
+    if (L >= 2) {
+      a.push({ id: "divine-spark", name: "Divine Spark", economy: "action", kind: "feature", cost: [{ res: "cd", n: 1 }], dc: sdc, saveAbility: "Con (harm only)", dmg: "Heal " + sp + ", or " + sp + " radiant or necrotic", onFail: "Full damage.", onSuccess: "Half damage.", range: "A creature within 30 ft", notes: "Magic action. Pick heal or harm. Harm forces a Con save." });
+      a.push({ id: "turn-undead", name: "Turn Undead", economy: "action", kind: "feature", cost: [{ res: "cd", n: 1 }], dc: sdc, saveAbility: "Wis", dmg: L >= 5 ? x.sear + "d8 radiant (Sear Undead)" : "", onFail: "Frightened and Incapacitated for 1 minute; it moves away from you." + (L >= 5 ? " Takes the Sear Undead damage." : ""), onSuccess: "No effect.", range: "Each Undead within 30 ft", notes: "Magic action. The effect ends early if it takes damage." });
+    }
+    if (sub === "life" && L >= 3) a.push({ id: "preserve-life", name: "Preserve Life", economy: "action", kind: "feature", cost: [{ res: "cd", n: 1 }], dmg: "Heal up to " + 5 * L + " in total", range: "Bloodied creatures within 30 ft", notes: "Magic action. No creature above half its max HP." + (L >= 17 ? " Supreme Healing applies to your healing dice." : "") });
+    if (L >= 10) a.push({ id: "divine-intervention", name: "Divine Intervention", economy: "action", kind: "spell", cost: [{ res: "intervention", n: 1 }], range: "As the spell", notes: "Cast a Cleric spell of 5th level or lower without a slot or material components." + (L >= 20 ? " Or Wish (then 2d4 long rests to recover)." : "") });
+    return a;
+  },
+  attackNotes: function (c, x) { return luCastNotes(x, "Wisdom") + (x.L >= 2 ? "Channel Divinity " + x.cd + " uses. Divine Spark " + x.spark + "d8" + luSign(x.m.wis) + "." : ""); }
+};
+
+/* ---------------------------------------- DRUID (SRD 5.2) ---------------------------------------- */
+LU.druid = {
+  name: "Druid", die: 8, asi: [4, 8, 12, 16], boon: 19, subLevel: 3, sa: "wis", carry: LU_PICKS,
+  legacy: [/^DRUID\b/, /^CIRCLE OF THE /],
+  slots: luFull, cantrips: luStep([[1, 2], [4, 3], [10, 4]]), prepared: LU_PREP_FULL,
+  wsn: luStep([[1, 0], [2, 2], [6, 3], [17, 4]]),
+  x: function (c, x) {
+    luCast(x, "wis"); x.ws = this.wsn(x.L); x.cr = x.L >= 8 ? "1" : x.L >= 4 ? "1/2" : "1/4"; x.forms = x.L >= 8 ? 8 : x.L >= 4 ? 6 : 4;
+    x.aid = x.L >= 14 ? 4 : x.L >= 10 ? 3 : 2; x.cantrips = this.cantrips(x.L); x.prepared = this.prepared(x.L);
+  },
+  subs: {
+    land: {
+      name: "Circle of the Land", match: /\bland\b/i,
+      feats: [
+        luF(3, "Circle of the Land Spells", "Pick a land (arid, polar, temperate or tropical) on each long rest; its Circle spells are always prepared (more at 5, 7 and 9)."),
+        luF(3, "Land's Aid", function (x) { return "Magic action, one Wild Shape use: a 10-ft sphere within 60 ft. Creatures you choose make a Con save (DC " + x.sdc + "): " + x.aid + "d6 necrotic, half on a success. One creature you choose there heals " + x.aid + "d6."; }),
+        luF(6, "Natural Recovery", "Once per long rest, cast one prepared Circle spell without a slot. On a short rest, also recover slots totalling half your Druid level (rounded up), none 6th level or higher."),
+        luF(10, "Nature's Ward", "Immune to Poisoned, and resistant to the damage type of your current land."),
+        luF(14, "Nature's Sanctuary", "Magic action, one Wild Shape use: a 15-ft cube of spectral trees for 1 minute; you and allies in it have half cover and your land's resistance.")
+      ]
+    }
+  },
+  feats: [
+    luF(1, "Spellcasting", function (x) { return luSpellText(x, "Full caster", "Wisdom") + " Change them on a long rest."; }),
+    luF(1, "Druidic", "You know Druidic, and Speak with Animals is always prepared."),
+    luF(1, "Primal Order", "Pick Magician (one more cantrip, + Wis mod to Arcana and Nature checks) or Warden (martial weapons, medium armor)."),
+    luF(2, "Wild Shape", function (x) { return "Bonus action: become a beast you know (" + x.forms + " forms, CR up to " + x.cr + (x.L >= 8 ? ", fly speeds allowed" : ", no fly speed") + "). " + x.ws + " uses, one back on a short rest, all on a long rest. Temp HP equal to your Druid level (" + x.L + ") when you change."; }),
+    luF(2, "Wild Companion", "Magic action: spend a spell slot or a Wild Shape use to cast Find Familiar without material components; the familiar is a Fey."),
+    luF(3, "Druid Subclass", "Pick a Druid subclass; its features come at 3, 6, 10 and 14."),
+    luF(5, "Wild Resurgence", "Once a turn with no Wild Shape uses left, spend a spell slot to regain one. Once per long rest, spend a Wild Shape use to regain a 1st-level slot."),
+    luF(7, "Elemental Fury", "Pick Potent Spellcasting (add Wis mod to Druid cantrip damage) or Primal Strike (once a turn, +1d8 cold, fire, lightning or thunder on a weapon or beast-form hit)."),
+    luF(15, "Improved Elemental Fury", "Potent Spellcasting: cantrips with a range of 10 ft or more reach 300 ft further. Primal Strike: the extra damage is 2d8."),
+    luF(18, "Beast Spells", "You can cast spells while in Wild Shape, except ones with a costly material component."),
+    luF(19, "Epic Boon", "Take an Epic Boon feat."),
+    luF(20, "Archdruid", "When you roll Initiative with no Wild Shape uses, regain one. Once per long rest, turn Wild Shape uses into one spell slot (two slot levels per use). You age ten times slower.")
+  ],
+  resources: function (c, x, sub) {
+    var r = [];
+    if (x.L >= 2) r.push({ key: "wildshape", name: "Wild Shape (CR " + x.cr + ", temp HP " + x.L + ")", max: x.ws, reset: "long", shortBack: 1 });
+    if (sub === "land" && x.L >= 6) r.push({ key: "natrec", name: "Natural Recovery (one Circle spell free)", max: 1, reset: "long" });
+    return r;
+  },
+  actions: function (c, x, sub) {
+    var a = [], L = x.L;
+    if (L >= 2) {
+      a.push({ id: "wild-shape", name: "Wild Shape", economy: "bonus", kind: "feature", cost: [{ res: "wildshape", n: 1 }], dmg: "Temp HP " + L, range: "Self", notes: "A beast form you know, CR up to " + x.cr + (L >= 8 ? " (fly speed allowed)" : " (no fly speed)") + ". Lasts up to half your Druid level in hours. Leave it as a bonus action." + (L >= 18 ? " Beast Spells: you can cast in beast form." : " No spellcasting in beast form.") });
+      a.push({ id: "wild-companion", name: "Wild Companion", economy: "action", kind: "feature", cost: [{ res: "wildshape", n: 1 }], range: "10 ft", notes: "Magic action: cast Find Familiar with no material components. The familiar is a Fey and vanishes on a long rest." });
+    }
+    if (sub === "land" && L >= 3) a.push({ id: "lands-aid", name: "Land's Aid", economy: "action", kind: "feature", cost: [{ res: "wildshape", n: 1 }], dc: x.sdc, saveAbility: "Con", dmg: x.aid + "d6 necrotic; heal " + x.aid + "d6", onFail: "Full damage.", onSuccess: "Half damage.", range: "10-ft sphere within 60 ft", notes: "Magic action. Pick the creatures that save, and one creature in the sphere that heals." });
+    if (sub === "land" && L >= 6) a.push({ id: "natural-recovery", name: "Natural Recovery (free Circle spell)", economy: "action", kind: "spell", cost: [{ res: "natrec", n: 1 }], range: "As the spell", notes: "Cast one prepared Circle of the Land spell without a slot. The short-rest slot recovery is separate: set the slot pips by hand." });
+    if (sub === "land" && L >= 14) a.push({ id: "natures-sanctuary", name: "Nature's Sanctuary", economy: "action", kind: "feature", cost: [{ res: "wildshape", n: 1 }], range: "15-ft cube within 120 ft", notes: "Magic action. Spectral trees for 1 minute: you and allies inside have half cover and your land's resistance. Bonus action to move it 60 ft." });
+    return a;
+  },
+  attackNotes: function (c, x) { return luCastNotes(x, "Wisdom") + (x.L >= 2 ? "Wild Shape " + x.ws + " uses, CR up to " + x.cr + "." : ""); }
+};
+
+/* ---------------------------------------- FIGHTER (SRD 5.2) ---------------------------------------- */
+LU.fighter = {
+  name: "Fighter", die: 10, asi: [4, 6, 8, 12, 14, 16], boon: 19, subLevel: 3, carry: LU_PICKS,
+  legacy: [/^FIGHTER\b/, /^CHAMPION\b/],
+  swn: luStep([[1, 2], [4, 3], [10, 4]]), surge: luStep([[1, 0], [2, 1], [17, 2]]), indom: luStep([[1, 0], [9, 1], [13, 2], [17, 3]]), mastery: luStep([[1, 3], [4, 4], [10, 5], [16, 6]]),
+  apa: function (L) { return L >= 20 ? 4 : L >= 11 ? 3 : L >= 5 ? 2 : 1; },
+  track: [["Weapon Mastery kinds", "wm"]],
+  x: function (c, x) { x.sw = this.swn(x.L); x.surge = this.surge(x.L); x.indom = this.indom(x.L); x.wm = this.mastery(x.L); x.gdc = 8 + x.pb + x.m.str; },
+  subs: {
+    champion: {
+      name: "Champion", match: /champion/i,
+      feats: [
+        luF(3, "Improved Critical", "Your weapon attacks and Unarmed Strikes score a critical hit on a 19 or 20."),
+        luF(3, "Remarkable Athlete", "Advantage on Initiative rolls and Athletics checks. After a critical hit, move up to half your speed without provoking Opportunity Attacks."),
+        luF(7, "Additional Fighting Style", "Take another Fighting Style feat."),
+        luF(10, "Heroic Warrior", "At the start of each of your turns in combat, gain Heroic Inspiration if you don't have it."),
+        luF(15, "Superior Critical", "Critical hits on an 18, 19 or 20."),
+        luF(18, "Survivor", function (x) { return "Advantage on death saving throws, and 18 to 20 counts as a 20. At the start of your turn while Bloodied (and above 0 HP), heal 5 + Con mod (" + Math.max(0, 5 + x.m.con) + ")."; })
+      ]
+    }
+  },
+  feats: [
+    luF(1, "Fighting Style", "Take a Fighting Style feat."),
+    luF(1, "Second Wind", function (x) { return "Bonus action: heal 1d10 + " + x.L + " (Fighter level). " + x.sw + " uses, one back on a short rest, all on a long rest."; }),
+    luF(1, "Weapon Mastery", function (x) { return "You can use the mastery property of " + x.wm + " kinds of weapon."; }),
+    luF(2, "Action Surge", function (x) { return "Once a turn, take one more action (not the Magic action). " + x.surge + " use" + (x.surge > 1 ? "s" : "") + ", back on a short or long rest."; }),
+    luF(2, "Tactical Mind", "When you fail an ability check, spend a Second Wind use to add 1d10; if it still fails, the use is not spent."),
+    luF(3, "Fighter Subclass", "Pick a Fighter subclass; its features come at 3, 7, 10, 15 and 18."),
+    luF(5, "Extra Attack", "Two attacks per Attack action."),
+    luF(5, "Tactical Shift", "When you use Second Wind, move up to half your speed without provoking Opportunity Attacks."),
+    luF(9, "Indomitable", function (x) { return "Reroll a failed saving throw with a bonus of +" + x.L + " (Fighter level). " + x.indom + " per long rest."; }),
+    luF(9, "Tactical Master", "When you attack with a weapon whose mastery you use, you can swap its property for Push, Sap or Slow for that attack."),
+    luF(11, "Two Extra Attacks", "Three attacks per Attack action."),
+    luF(13, "Studied Attacks", "When you miss a creature, you have advantage on your next attack roll against it before the end of your next turn."),
+    luF(19, "Epic Boon", "Take an Epic Boon feat."),
+    luF(20, "Three Extra Attacks", "Four attacks per Attack action.")
+  ],
+  resources: function (c, x) {
+    var r = [{ key: "sw", name: "Second Wind (heal 1d10+" + x.L + ")", max: x.sw, reset: "long", shortBack: 1 }];
+    if (x.L >= 2) r.push({ key: "surge", name: "Action Surge (one more action)", max: x.surge, reset: "short" });
+    if (x.L >= 9) r.push({ key: "indom", name: "Indomitable (reroll a save +" + x.L + ")", max: x.indom, reset: "long" });
+    return r;
+  },
+  actions: function (c, x) {
+    var a = [], L = x.L;
+    a.push({ id: "second-wind", name: "Second Wind", economy: "bonus", kind: "feature", cost: [{ res: "sw", n: 1 }], dmg: "Heal 1d10 + " + L, range: "Self", notes: "Regain 1d10 + Fighter level HP." + (L >= 5 ? " Tactical Shift: move up to half your speed without provoking Opportunity Attacks." : "") });
+    a.push({ id: "grapple", name: "Grapple", economy: "attack", kind: "attack", dc: x.gdc, saveAbility: "Str/Dex", range: "Melee 5 ft", onFail: "Grappled; they escape against DC " + x.gdc + ".", onSuccess: "Nothing happens.", notes: "Replaces one attack. DC " + x.gdc + " = 8 + Str " + x.m.str + " + proficiency " + x.pb + "." });
+    a.push({ id: "shove", name: "Shove", economy: "attack", kind: "attack", dc: x.gdc, saveAbility: "Str/Dex", range: "Melee 5 ft", onFail: "Pushed 5 ft or knocked Prone.", onSuccess: "Nothing happens.", notes: "Replaces one attack. DC " + x.gdc + "." });
+    if (L >= 2) {
+      a.push({ id: "action-surge", name: "Action Surge", economy: "free", kind: "feature", cost: [{ res: "surge", n: 1 }], once: "turn", range: "Self", notes: "Take one more action this turn (not the Magic action). Mark the Action pip free by hand for the extra action." });
+      a.push({ id: "tactical-mind", name: "Tactical Mind", economy: "free", kind: "feature", cost: [{ res: "sw", n: 1 }], dmg: "Add 1d10 to the check", range: "Your failed ability check", notes: "If the check still fails, tap again to undo: the Second Wind use is not spent." });
+    }
+    if (L >= 9) a.push({ id: "indomitable", name: "Indomitable", economy: "free", kind: "feature", cost: [{ res: "indom", n: 1 }], dmg: "Reroll with +" + L, range: "Your failed saving throw", notes: "Use the new roll." });
+    return a;
+  },
+  attackNotes: function (c, x) {
+    var n = this.apa(x.L);
+    return "2024 rules. Weapon attack = proficiency " + x.pb + " + Str or Dex (+ any magic bonus). " + (n > 1 ? n + " attacks per Attack action. " : "One attack per Attack action. ") + "Weapon Mastery: " + x.wm + " kinds. Grapple/Shove DC " + x.gdc + "." + (x.L >= 2 ? " Action Surge: one more action, " + x.surge + " per short rest." : "");
+  }
+};
+
+/* ---------------------------------------- PALADIN (SRD 5.2) ---------------------------------------- */
+LU.paladin = {
+  name: "Paladin", die: 10, asi: [4, 8, 12, 16], boon: 19, subLevel: 3, sa: "cha", carry: LU_PICKS,
+  legacy: [/^PALADIN\b/, /^OATH OF /],
+  slots: luHalf, cantrips: function () { return 0; }, prepared: LU_PREP_HALF,
+  cdn: luStep([[1, 0], [3, 2], [11, 3]]),
+  apa: function (L) { return L >= 5 ? 2 : 1; },
+  x: function (c, x) { luCast(x, "cha"); x.loh = 5 * x.L; x.cd = this.cdn(x.L); x.aura = Math.max(1, x.m.cha); x.arange = x.L >= 18 ? 30 : 10; x.cantrips = 0; x.prepared = this.prepared(x.L); x.maxSlot = luHalf(x.L).length; },
+  subs: {
+    devotion: {
+      name: "Oath of Devotion", match: /devotion/i,
+      spells: { 3: [["Protection from Evil and Good", 1], ["Shield of Faith", 1]], 5: [["Aid", 2], ["Zone of Truth", 2]], 9: [["Beacon of Hope", 3], ["Dispel Magic", 3]], 13: [["Freedom of Movement", 4], ["Guardian of Faith", 4]], 17: [["Commune", 5], ["Flame Strike", 5]] },
+      feats: [
+        luF(3, "Sacred Weapon", function (x) { return "When you take the Attack action, spend a Channel Divinity: for 10 minutes one weapon adds your Cha mod (" + luNum(x.aura) + ") to attack rolls, sheds bright light and can deal Radiant damage."; }),
+        luF(3, "Oath of Devotion Spells", "Protection from Evil and Good and Shield of Faith always prepared (more at 5, 9, 13 and 17)."),
+        luF(7, "Aura of Devotion", "You and allies in your Aura of Protection are immune to Charmed."),
+        luF(15, "Smite of Protection", "When you cast Divine Smite, you and allies in your aura have half cover until the start of your next turn."),
+        luF(20, "Holy Nimbus", function (x) { return "Bonus action, once per long rest (or spend a 5th-level slot): for 10 minutes enemies starting their turn in your aura take " + (x.m.cha + x.pb) + " radiant (Cha mod + proficiency), you have advantage on saves forced by Fiends and Undead, and you shed sunlight."; })
+      ]
+    }
+  },
+  feats: [
+    luF(1, "Lay On Hands", function (x) { return "Bonus action: restore HP from a pool of " + x.loh + " (5 x Paladin level), or spend 5 to end Poisoned. The pool refills on a long rest."; }),
+    luF(1, "Spellcasting", function (x) { return luSpellText(x, "Half-caster", "Charisma") + " Change one on a long rest."; }),
+    luF(1, "Weapon Mastery", "You can use the mastery property of two kinds of weapon."),
+    luF(2, "Fighting Style", "Take a Fighting Style feat (or Blessed Warrior: two Cleric cantrips)."),
+    luF(2, "Paladin's Smite", "Divine Smite is always prepared; once per long rest you can cast it without a slot."),
+    luF(3, "Channel Divinity", function (x) { return x.cd + " uses, one back on a short rest, all on a long rest. Divine Sense: bonus action, for 10 minutes you sense Celestials, Fiends and Undead within 60 ft."; }),
+    luF(3, "Paladin Subclass", "Pick a Paladin subclass; its features come at 3, 7, 15 and 20."),
+    luF(5, "Extra Attack", "Two attacks per Attack action."),
+    luF(5, "Faithful Steed", "Find Steed is always prepared; once per long rest you can cast it without a slot."),
+    luF(6, "Aura of Protection", function (x) { return "You and allies within " + x.arange + " ft add your Cha mod (" + luNum(x.aura) + ", minimum +1) to saving throws while you are conscious."; }),
+    luF(9, "Abjure Foes", function (x) { return "Magic action, one Channel Divinity: up to " + x.aura + " creatures within 60 ft make a Wis save (DC " + x.sdc + ") or are Frightened for 1 minute, and can only move, act or bonus act on a turn."; }),
+    luF(10, "Aura of Courage", "You and allies in your aura are immune to Frightened."),
+    luF(11, "Radiant Strikes", "Your melee weapon hits and Unarmed Strikes deal an extra 1d8 radiant."),
+    luF(14, "Restoring Touch", "Lay on Hands can also end Blinded, Charmed, Deafened, Frightened, Paralyzed or Stunned (5 points each)."),
+    luF(18, "Aura Expansion", "Your aura now reaches 30 ft."),
+    luF(19, "Epic Boon", "Take an Epic Boon feat.")
+  ],
+  resources: function (c, x, sub) {
+    var r = [{ key: "loh", name: "Lay on Hands (pool of 5 x level)", max: x.loh, reset: "long" }];
+    if (x.L >= 2) r.push({ key: "smite", name: "Paladin's Smite (free Divine Smite)", max: 1, reset: "long" });
+    if (x.L >= 3) r.push({ key: "cd", name: "Channel Divinity (Divine Sense and more)", max: x.cd, reset: "long", shortBack: 1 });
+    if (sub === "devotion" && x.L >= 20) r.push({ key: "nimbus", name: "Holy Nimbus (10 minutes)", max: 1, reset: "long" });
+    return r;
+  },
+  actions: function (c, x, sub) {
+    var a = [], L = x.L, rs = L >= 11 ? " (+1d8 Radiant Strikes)" : "";
+    a.push({ id: "loh-1", name: "Lay on Hands (1 HP)", economy: "bonus", kind: "feature", cost: [{ res: "loh", n: 1 }], dmg: "Heal 1", range: "Touch", notes: "One point from the pool. For a bigger heal use the 5 HP button, or count the points off on the Sheet tab." });
+    a.push({ id: "loh-5", name: "Lay on Hands (5 HP)", economy: "bonus", kind: "feature", cost: [{ res: "loh", n: 5 }], dmg: "Heal 5, or end Poisoned", range: "Touch", notes: "5 points from the pool." + (L >= 14 ? " Restoring Touch: 5 points also end Blinded, Charmed, Deafened, Frightened, Paralyzed or Stunned." : "") });
+    if (L >= 2) {
+      a.push({ id: "divine-smite", name: "Divine Smite", economy: "bonus", kind: "spell", spell: true, cost: [{ slot: 1 }], req: ["hit"], dmg: "2d8 radiant" + rs, levels: luUpcast(1, x.maxSlot, function (lv) { return (lv + 1) + "d8 radiant"; }), range: "The creature you just hit (melee or unarmed)", notes: "Bonus action right after the hit. +1d8 more against a Fiend or Undead." + (sub === "devotion" && L >= 15 ? " Smite of Protection: half cover for you and allies in your aura." : "") });
+      a.push({ id: "divine-smite-free", name: "Divine Smite (free)", economy: "bonus", kind: "spell", spell: true, cost: [{ res: "smite", n: 1 }], req: ["hit"], dmg: "2d8 radiant" + rs, range: "The creature you just hit (melee or unarmed)", notes: "Paladin's Smite: once per long rest without a slot, cast at 1st level." });
+    }
+    if (L >= 3) a.push({ id: "divine-sense", name: "Divine Sense", economy: "bonus", kind: "feature", cost: [{ res: "cd", n: 1 }], range: "60 ft", notes: "For 10 minutes, sense the location and type of Celestials, Fiends and Undead, and consecrated or desecrated places." });
+    if (sub === "devotion" && L >= 3) a.push({ id: "sacred-weapon", name: "Sacred Weapon", economy: "free", kind: "feature", cost: [{ res: "cd", n: 1 }], dmg: luNum(x.aura) + " to attack rolls", range: "One weapon you hold", notes: "When you take the Attack action. 10 minutes: bright light 20 ft, Radiant damage if you like." });
+    if (L >= 9) a.push({ id: "abjure-foes", name: "Abjure Foes", economy: "action", kind: "feature", cost: [{ res: "cd", n: 1 }], dc: x.sdc, saveAbility: "Wis", onFail: "Frightened for 1 minute; it can only move, take an action or a bonus action on its turn.", onSuccess: "No effect.", range: "Up to " + x.aura + " creatures within 60 ft", notes: "Magic action. Ends early if it takes damage." });
+    if (sub === "devotion" && L >= 20) a.push({ id: "holy-nimbus", name: "Holy Nimbus", economy: "bonus", kind: "feature", cost: [{ res: "nimbus", n: 1 }], dmg: (x.m.cha + x.pb) + " radiant to enemies starting a turn in the aura", range: "Your aura (30 ft)", notes: "10 minutes. Advantage on saves forced by Fiends and Undead. Sunlight." });
+    return a;
+  },
+  attackNotes: function (c, x) { return luCastNotes(x, "Charisma") + (x.L >= 5 ? "Extra Attack: two attacks per Attack action. " : "") + "Lay on Hands pool " + x.loh + "." + (x.L >= 6 ? " Aura of Protection " + luNum(x.aura) + " to saves, " + x.arange + " ft." : "") + (x.L >= 11 ? " Radiant Strikes +1d8 radiant on melee hits." : ""); }
+};
+
+/* ---------------------------------------- RANGER (SRD 5.2) ---------------------------------------- */
+LU.ranger = {
+  name: "Ranger", die: 10, asi: [4, 8, 12, 16], boon: 19, subLevel: 3, sa: "wis", carry: LU_PICKS,
+  legacy: [/^RANGER\b/, /^HUNTER\b/],
+  slots: luHalf, cantrips: function () { return 0; }, prepared: LU_PREP_HALF,
+  fen: luStep([[1, 2], [5, 3], [9, 4], [13, 5], [17, 6]]),
+  speedBonus: function (L) { return L >= 6 ? 10 : 0; },
+  apa: function (L) { return L >= 5 ? 2 : 1; },
+  x: function (c, x) { luCast(x, "wis"); x.fe = this.fen(x.L); x.hm = x.L >= 20 ? "1d10" : "1d6"; x.tire = Math.max(1, x.m.wis); x.cantrips = 0; x.prepared = this.prepared(x.L); },
+  subs: {
+    hunter: {
+      name: "Hunter", match: /\bhunter\b/i,
+      feats: [
+        luF(3, "Hunter's Lore", "While a creature is marked by your Hunter's Mark, you know its immunities, resistances and vulnerabilities."),
+        luF(3, "Hunter's Prey", "Pick Colossus Slayer (once a turn, +1d8 on a hit against a creature missing any HP) or Horde Breaker (once a turn, one more attack against a different creature within 5 ft of the first); swap on a rest."),
+        luF(7, "Defensive Tactics", "Pick Escape the Horde (Opportunity Attacks against you have disadvantage) or Multiattack Defense (after a creature hits you, its other attacks this turn have disadvantage); swap on a rest."),
+        luF(11, "Superior Hunter's Prey", "Once a turn, when you deal Hunter's Mark damage, deal the same extra damage to another creature you can see within 30 ft of the first."),
+        luF(15, "Superior Hunter's Defense", "Reaction when you take damage: resistance to that damage and any more of the same type until the end of the turn.")
+      ]
+    }
+  },
+  feats: [
+    luF(1, "Spellcasting", function (x) { return luSpellText(x, "Half-caster", "Wisdom") + " Change one on a long rest."; }),
+    luF(1, "Favored Enemy", function (x) { return "Hunter's Mark is always prepared; cast it " + x.fe + " times per long rest without a slot."; }),
+    luF(1, "Weapon Mastery", "You can use the mastery property of two kinds of weapon."),
+    luF(2, "Deft Explorer", "Expertise in one of your skills, and two more languages."),
+    luF(2, "Fighting Style", "Take a Fighting Style feat (or Druidic Warrior: two Druid cantrips)."),
+    luF(3, "Ranger Subclass", "Pick a Ranger subclass; its features come at 3, 7, 11 and 15."),
+    luF(5, "Extra Attack", "Two attacks per Attack action."),
+    luF(6, "Roving", "+10 ft speed while not in heavy armor; climb and swim speeds equal to your speed."),
+    luF(9, "Expertise", "Expertise in two more skills."),
+    luF(10, "Tireless", function (x) { return "Magic action: gain 1d8 + Wis mod temp HP, " + x.tire + " times per long rest. A short rest also lowers your Exhaustion by 1."; }),
+    luF(13, "Relentless Hunter", "Taking damage can't break your concentration on Hunter's Mark."),
+    luF(14, "Nature's Veil", function (x) { return "Bonus action: Invisible until the end of your next turn, " + x.tire + " times per long rest."; }),
+    luF(17, "Precise Hunter", "Advantage on attack rolls against the creature marked by your Hunter's Mark."),
+    luF(18, "Feral Senses", "Blindsight 30 ft."),
+    luF(19, "Epic Boon", "Take an Epic Boon feat."),
+    luF(20, "Foe Slayer", "The damage die of your Hunter's Mark becomes a d10.")
+  ],
+  resources: function (c, x) {
+    var r = [{ key: "hmark", name: "Favored Enemy (free Hunter's Mark)", max: x.fe, reset: "long" }];
+    if (x.L >= 10) r.push({ key: "tireless", name: "Tireless (temp HP 1d8" + luSign(x.m.wis) + ")", max: x.tire, reset: "long" });
+    if (x.L >= 14) r.push({ key: "veil", name: "Nature's Veil (Invisible)", max: x.tire, reset: "long" });
+    return r;
+  },
+  actions: function (c, x, sub) {
+    var a = [], L = x.L, hm = "+" + x.hm + " force on each hit", nt = "Concentration, up to 1 hour. Move it to a new target as a bonus action when the old one drops." + (L >= 13 ? " Damage can't break it (Relentless Hunter)." : "") + (L >= 17 ? " Advantage on attacks against the target." : "");
+    a.push({ id: "hunters-mark", name: "Hunter's Mark (free)", economy: "bonus", kind: "spell", spell: true, concentration: true, cost: [{ res: "hmark", n: 1 }], dmg: hm, range: "90 ft", notes: "Favored Enemy: no slot. " + nt });
+    a.push({ id: "hunters-mark-slot", name: "Hunter's Mark (slot)", economy: "bonus", kind: "spell", spell: true, concentration: true, cost: [{ slot: 1 }], dmg: hm, range: "90 ft", notes: nt });
+    if (L >= 10) a.push({ id: "tireless", name: "Tireless", economy: "action", kind: "feature", cost: [{ res: "tireless", n: 1 }], dmg: "Temp HP 1d8" + luSign(x.m.wis), range: "Self", notes: "Magic action." });
+    if (L >= 14) a.push({ id: "natures-veil", name: "Nature's Veil", economy: "bonus", kind: "feature", cost: [{ res: "veil", n: 1 }], range: "Self", notes: "Invisible until the end of your next turn." });
+    if (sub === "hunter" && L >= 3) a.push({ id: "colossus-slayer", name: "Colossus Slayer", economy: "free", kind: "feature", once: "turn", req: ["hit"], dmg: "+1d8", range: "The creature you just hit, if it is missing any HP", notes: "Hunter's Prey, if you picked Colossus Slayer. Horde Breaker instead: once a turn, one more attack against a different creature within 5 ft of the first." });
+    if (sub === "hunter" && L >= 15) a.push({ id: "superior-hunters-defense", name: "Superior Hunter's Defense", economy: "reaction", kind: "feature", range: "Self", notes: "When you take damage: resistance to it and that type until the end of the turn." });
+    return a;
+  },
+  attackNotes: function (c, x) { return luCastNotes(x, "Wisdom") + (x.L >= 5 ? "Extra Attack: two attacks per Attack action. " : "") + "Hunter's Mark " + x.hm + " force, " + x.fe + " free casts per long rest."; }
+};
+
+/* ---------------------------------------- ROGUE (SRD 5.2) ---------------------------------------- */
+LU.rogue = {
+  name: "Rogue", die: 8, asi: [4, 8, 10, 12, 16], boon: 19, subLevel: 3, carry: LU_PICKS,
+  legacy: [/^ROGUE\b/, /^THIEF\b/],
+  saves: function (L) { return L >= 15 ? ["wis", "cha"] : []; },
+  x: function (c, x) { x.sa = Math.ceil(x.L / 2); x.cdc = 8 + x.pb + x.m.dex; },
+  subs: {
+    thief: {
+      name: "Thief", match: /\bthief\b/i,
+      feats: [
+        luF(3, "Fast Hands", "Cunning Action can also make a Sleight of Hand check, use thieves' tools on a lock or trap, or take the Utilize action."),
+        luF(3, "Second-Story Work", "Climb speed equal to your speed, and running jumps can use Dex instead of Str."),
+        luF(9, "Supreme Sneak", "New Cunning Strike option, Stealth Attack (1d6): if you are Hidden, the attack doesn't reveal you as long as you end the turn behind cover."),
+        luF(13, "Use Magic Device", "Attune to up to four magic items; when an item spends a charge, roll a d6 and on a 6 it doesn't; you can read any Spell Scroll (Int check for higher spells)."),
+        luF(17, "Thief's Reflexes", "In the first round of combat you take two turns: one at your Initiative and one at your Initiative minus 10.")
+      ]
+    }
+  },
+  feats: [
+    luF(1, "Expertise", "Expertise in two of your skill proficiencies."),
+    luF(1, "Sneak Attack", function (x) { return "Once a turn, +" + x.sa + "d6 on a hit with a Finesse or ranged weapon when you have advantage, or when an ally who isn't Incapacitated is within 5 ft of the target and you don't have disadvantage."; }),
+    luF(1, "Thieves' Cant", "You know Thieves' Cant and one other language."),
+    luF(1, "Weapon Mastery", "You can use the mastery property of two kinds of weapon."),
+    luF(2, "Cunning Action", "Bonus action: Dash, Disengage or Hide."),
+    luF(3, "Rogue Subclass", "Pick a Rogue subclass; its features come at 3, 9, 13 and 17."),
+    luF(3, "Steady Aim", "Bonus action, if you haven't moved this turn: advantage on your next attack roll this turn; your speed is 0 until the end of the turn."),
+    luF(5, "Cunning Strike", function (x) { return "When you deal Sneak Attack damage, give up some of its dice for an effect (save DC " + x.cdc + " = 8 + Dex + proficiency). Poison (1d6): Con save or Poisoned for 1 minute. Trip (1d6): Dex save or Prone. Withdraw (1d6): move half your speed without Opportunity Attacks."; }),
+    luF(5, "Uncanny Dodge", "Reaction when an attacker you can see hits you: halve the damage."),
+    luF(6, "Expertise", "Expertise in two more skills."),
+    luF(7, "Evasion", "Dex save for half damage: success takes none, fail takes half (not while Incapacitated)."),
+    luF(7, "Reliable Talent", "An ability check roll of 9 or lower with a proficient skill or tool counts as a 10."),
+    luF(11, "Improved Cunning Strike", "Use up to two Cunning Strike effects on one Sneak Attack, paying the dice for each."),
+    luF(14, "Devious Strikes", "New Cunning Strike options. Daze (2d6): Con save or only one of move, action or bonus action on its next turn. Knock Out (6d6): Con save or Unconscious for 1 minute. Obscure (3d6): Dex save or Blinded until your next turn ends."),
+    luF(15, "Slippery Mind", "Proficiency in Wisdom and Charisma saving throws."),
+    luF(18, "Elusive", "No attack roll has advantage against you unless you are Incapacitated."),
+    luF(19, "Epic Boon", "Take an Epic Boon feat."),
+    luF(20, "Stroke of Luck", "Turn a failed d20 Test into a 20; once per short or long rest.")
+  ],
+  resources: function (c, x) { return x.L >= 20 ? [{ key: "luck", name: "Stroke of Luck (a failed d20 Test becomes 20)", max: 1, reset: "short" }] : []; },
+  actions: function (c, x, sub) {
+    var a = [], L = x.L;
+    a.push({ id: "sneak-attack", name: "Sneak Attack", economy: "free", kind: "feature", once: "turn", req: ["hit"], dmg: "+" + x.sa + "d6 (the weapon's damage type)", range: "The creature you just hit", notes: "Once per turn, on a hit with a Finesse or ranged weapon, when you had advantage on the roll, or an ally who isn't Incapacitated is within 5 ft of the target and you didn't have disadvantage." + (L >= 5 ? " Cunning Strike can trade some of the dice for an effect." : "") });
+    if (L >= 2) a.push({ id: "cunning-action", name: "Cunning Action", economy: "bonus", kind: "feature", range: "Self", notes: "Dash, Disengage or Hide as a bonus action." + (sub === "thief" && L >= 3 ? " Fast Hands: or a Sleight of Hand check, thieves' tools, or the Utilize action." : "") });
+    if (L >= 3) a.push({ id: "steady-aim", name: "Steady Aim", economy: "bonus", kind: "feature", range: "Self", notes: "Only if you haven't moved this turn. Advantage on your next attack roll this turn; your speed is 0 until the end of the turn." });
+    if (L >= 5) {
+      a.push({ id: "cunning-strike", name: "Cunning Strike", economy: "free", kind: "feature", req: ["hit"], dc: x.cdc, saveAbility: "Con (Poison" + (L >= 14 ? ", Daze, Knock Out" : "") + ") or Dex (Trip" + (L >= 14 ? ", Obscure" : "") + ")", onFail: "The effect you picked lands.", onSuccess: "No effect; the damage still lands.", range: "The creature your Sneak Attack hit", notes: "Pay Sneak Attack dice: Poison 1d6, Trip 1d6, Withdraw 1d6 (no save)" + (sub === "thief" && L >= 9 ? ", Stealth Attack 1d6" : "") + (L >= 14 ? ", Daze 2d6, Knock Out 6d6, Obscure 3d6" : "") + "." + (L >= 11 ? " Up to two effects per Sneak Attack." : "") });
+      a.push({ id: "uncanny-dodge", name: "Uncanny Dodge", economy: "reaction", kind: "feature", dmg: "Halve the damage", range: "When an attacker you can see hits you", notes: "Halve the attack's damage against you." });
+    }
+    if (L >= 20) a.push({ id: "stroke-of-luck", name: "Stroke of Luck", economy: "free", kind: "feature", cost: [{ res: "luck", n: 1 }], range: "Your own failed d20 Test", notes: "It counts as a roll of 20." });
+    return a;
+  },
+  fixAttack: function (e, x) {
+    e.damage = e.damage.replace(/\(\+\d+d6 Sneak Attack\)/g, "(+" + x.sa + "d6 Sneak Attack)");
+    if (/^sneak attack/i.test(e.name)) e.damage = e.damage.replace(/^\+\d+d6/, "+" + x.sa + "d6");
+  },
+  /* A player's own attack notes are kept; only the numbers that change are rewritten. */
+  attackNotes: function (c, x) {
+    var t = String(c.attackNotes || ""), atk = luNum(x.m.dex + x.pb), cs = " Cunning Strike save DC " + x.cdc + ".";
+    if (/Sneak Attack/.test(t)) {
+      t = t.replace(/Attack [+\-]\d+ = Dex [+\-]?\d+ \+ proficiency \d+, damage \+ Dex [+\-]?\d+/, "Attack " + atk + " = Dex " + x.m.dex + " + proficiency " + x.pb + ", damage + Dex " + x.m.dex);
+      t = t.replace(/\+\d+d6 on a hit/g, "+" + x.sa + "d6 on a hit").replace(/ Cunning Strike save DC \d+\./, "");
+      return x.L >= 5 ? t + cs : t;
+    }
+    return "2024 rules. Finesse or ranged attack " + atk + " = Dex " + x.m.dex + " + proficiency " + x.pb + ". Sneak Attack once a turn: +" + x.sa + "d6 on a hit with advantage, or with an ally within 5 ft of the target. Weapon Mastery: two kinds." + (x.L >= 5 ? cs : "");
+  }
+};
+
+/* ---------------------------------------- SORCERER (SRD 5.2) ---------------------------------------- */
+LU.sorcerer = {
+  name: "Sorcerer", die: 6, asi: [4, 8, 12, 16], boon: 19, subLevel: 3, sa: "cha", carry: LU_PICKS,
+  legacy: [/^SORCERER\b/, /^DRACONIC /],
+  slots: luFull, cantrips: luStep([[1, 4], [4, 5], [10, 6]]),
+  prepared: luStep([[1, 2], [2, 4], [3, 6], [4, 7], [5, 9], [6, 10], [7, 11], [8, 12], [9, 14], [10, 15], [11, 16], [13, 17], [15, 18], [17, 19], [18, 20], [19, 21], [20, 22]]),
+  metan: luStep([[1, 0], [2, 2], [10, 4], [17, 6]]),
+  track: [["Metamagic options", "meta"]],
+  x: function (c, x) { luCast(x, "cha"); x.sp = x.L >= 2 ? x.L : 0; x.meta = this.metan(x.L); x.rest = Math.floor(x.L / 2); x.cantrips = this.cantrips(x.L); x.prepared = this.prepared(x.L); },
+  subs: {
+    draconic: {
+      name: "Draconic Sorcery", match: /draconic/i, hp: 1,
+      spells: { 3: [["Alter Self", 2], ["Chromatic Orb", 1], ["Command", 1], ["Dragon's Breath", 2]], 5: [["Fear", 3], ["Fly", 3]], 7: [["Arcane Eye", 4], ["Charm Monster", 4]], 9: [["Legend Lore", 5], ["Summon Dragon", 5]] },
+      feats: [
+        luF(3, "Draconic Resilience", "Max HP +1 per Sorcerer level (Level Up adds it). With no armor, AC = 10 + Dex + Cha."),
+        luF(3, "Draconic Spells", "Alter Self, Chromatic Orb, Command and Dragon's Breath always prepared (more at 5, 7 and 9)."),
+        luF(6, "Elemental Affinity", "Pick acid, cold, fire, lightning or poison: resistance to it, and add Cha mod to one damage roll of a Sorcerer spell of that type."),
+        luF(14, "Dragon Wings", "Bonus action: fly speed 60 ft for 1 hour. Once per long rest, or spend 3 Sorcery Points to use it again."),
+        luF(18, "Dragon Companion", "Summon Dragon is always prepared; once per long rest cast it without a material component, and it can last 1 minute without concentration.")
+      ]
+    }
+  },
+  feats: [
+    luF(1, "Spellcasting", function (x) { return luSpellText(x, "Full caster", "Charisma") + " Swap one when you gain a level."; }),
+    luF(1, "Innate Sorcery", "Bonus action, twice per long rest: for 1 minute your Sorcerer spell save DC is 1 higher and your Sorcerer spell attacks have advantage."),
+    luF(2, "Font of Magic", function (x) { return x.sp + " Sorcery Points (= Sorcerer level), back on a long rest. Bonus action: turn points into a slot (2/3/5/6/7 points for 1st to 5th level), or a slot into points equal to its level."; }),
+    luF(2, "Metamagic", function (x) { return "You know " + x.meta + " Metamagic options; each costs Sorcery Points when you use it."; }),
+    luF(3, "Sorcerer Subclass", "Pick a Sorcerer subclass; its features come at 3, 6, 14 and 18."),
+    luF(5, "Sorcerous Restoration", function (x) { return "On a short rest, regain up to " + x.rest + " Sorcery Points (half your level); once per long rest."; }),
+    luF(7, "Sorcery Incarnate", "With no Innate Sorcery uses left, spend 2 Sorcery Points to start it. While it is on, you can use two Metamagic options on one spell."),
+    luF(10, "Metamagic", "Learn two more Metamagic options."),
+    luF(17, "Metamagic", "Learn two more Metamagic options."),
+    luF(19, "Epic Boon", "Take an Epic Boon feat."),
+    luF(20, "Arcane Apotheosis", "While Innate Sorcery is on, one Metamagic option each turn costs no Sorcery Points.")
+  ],
+  resources: function (c, x, sub) {
+    var r = [];
+    if (x.L >= 2) r.push({ key: "sp", name: "Sorcery Points (Font of Magic)", max: x.sp, reset: "long" });
+    r.push({ key: "innate", name: "Innate Sorcery (+1 DC, advantage, 1 minute)", max: 2, reset: "long" });
+    if (x.L >= 5) r.push({ key: "sorcres", name: "Sorcerous Restoration (" + x.rest + " SP on a short rest)", max: 1, reset: "long" });
+    if (sub === "draconic" && x.L >= 14) r.push({ key: "wings", name: "Dragon Wings (fly 60 ft, 1 hour)", max: 1, reset: "long" });
+    return r;
+  },
+  actions: function (c, x, sub) {
+    var a = [], L = x.L;
+    a.push({ id: "innate-sorcery", name: "Innate Sorcery", economy: "bonus", kind: "feature", cost: [{ res: "innate", n: 1 }], dmg: "Spell DC " + (x.sdc + 1) + ", advantage on spell attacks", range: "Self", notes: "1 minute." + (L >= 7 ? " Sorcery Incarnate: two Metamagic options on one spell while it is on." : "") });
+    if (L >= 7) a.push({ id: "innate-sorcery-sp", name: "Innate Sorcery (2 SP)", economy: "bonus", kind: "feature", cost: [{ res: "sp", n: 2 }], dmg: "Spell DC " + (x.sdc + 1) + ", advantage on spell attacks", range: "Self", notes: "Sorcery Incarnate: when no Innate Sorcery uses are left." });
+    if (L >= 2) a.push({ id: "create-slot", name: "Font of Magic: 1st-level slot (2 SP)", economy: "bonus", kind: "feature", cost: [{ res: "sp", n: 2 }], effects: [{ restoreSlot: 1 }], range: "Self", notes: "Brings back one spent 1st-level slot. For higher slots (3/5/6/7 SP) or slots into points, set the bars by hand on the Spells tab." });
+    if (L >= 5) a.push({ id: "sorcerous-restoration", name: "Sorcerous Restoration", economy: "free", kind: "feature", cost: [{ res: "sorcres", n: 1 }], range: "On a short rest", notes: "Regain up to " + x.rest + " Sorcery Points: add them back on the Sheet tab." });
+    if (sub === "draconic" && L >= 14) a.push({ id: "dragon-wings", name: "Dragon Wings", economy: "bonus", kind: "feature", cost: [{ res: "wings", n: 1 }], range: "Self", notes: "Fly speed 60 ft for 1 hour. Again before a long rest for 3 Sorcery Points." });
+    return a;
+  },
+  attackNotes: function (c, x) { return luCastNotes(x, "Charisma") + (x.L >= 2 ? x.sp + " Sorcery Points, " + x.meta + " Metamagic options." : "Innate Sorcery twice per long rest."); }
+};
+
+/* ---------------------------------------- WARLOCK (SRD 5.2) ---------------------------------------- */
+LU.warlock = {
+  name: "Warlock", die: 8, asi: [4, 8, 12, 16], boon: 19, subLevel: 3, sa: "cha", carry: LU_PICKS,
+  legacy: [/^WARLOCK\b/, /^FIEND PATRON/, /^THE FIEND\b/],
+  pact: function (L) { return { max: luPactN(L), level: luPactLv(L) }; },
+  cantrips: luStep([[1, 2], [4, 3], [10, 4]]),
+  prepared: luStep([[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10], [11, 11], [13, 12], [15, 13], [17, 14], [19, 15]]),
+  invn: luStep([[1, 1], [2, 3], [5, 5], [7, 6], [9, 7], [12, 8], [15, 9], [18, 10]]),
+  arcana: [[11, 6], [13, 7], [15, 8], [17, 9]],
+  track: [["Eldritch Invocations known", "inv"]],
+  x: function (c, x) { luCast(x, "cha"); x.inv = this.invn(x.L); x.pm = luPactN(x.L); x.pl = luPactLv(x.L); x.cun = x.L >= 20 ? x.pm : Math.ceil(x.pm / 2); x.luck = Math.max(1, x.m.cha); x.cantrips = this.cantrips(x.L); x.prepared = this.prepared(x.L); },
+  subs: {
+    fiend: {
+      name: "Fiend Patron", match: /fiend/i,
+      spells: { 3: [["Burning Hands", 1], ["Command", 1], ["Scorching Ray", 2], ["Suggestion", 2]], 5: [["Fireball", 3], ["Stinking Cloud", 3]], 7: [["Fire Shield", 4], ["Wall of Fire", 4]], 9: [["Geas", 5], ["Insect Plague", 5]] },
+      feats: [
+        luF(3, "Dark One's Blessing", function (x) { return "When an enemy drops to 0 HP (one you hit, or within 10 ft of you), gain " + Math.max(1, x.m.cha + x.L) + " temp HP (Cha mod + Warlock level, minimum 1)."; }),
+        luF(3, "Fiend Spells", "Burning Hands, Command, Scorching Ray and Suggestion always prepared (more at 5, 7 and 9)."),
+        luF(6, "Dark One's Own Luck", function (x) { return "Add 1d10 to one of your ability checks or saves after seeing the roll; " + x.luck + " times per long rest (Cha mod, minimum 1), once per roll."; }),
+        luF(10, "Fiendish Resilience", "After a short or long rest, pick a damage type other than Force: you have resistance to it."),
+        luF(14, "Hurl Through Hell", function (x) { return "Once a turn when you hit with an attack roll: Cha save (DC " + x.sdc + ") or the target vanishes through the Lower Planes, takes 8d10 psychic (not Fiends) and is Incapacitated until it returns at the end of your next turn. Once per long rest, or spend a Pact slot."; })
+      ]
+    }
+  },
+  feats: [
+    luF(1, "Eldritch Invocations", function (x) { return "You know " + x.inv + " invocations (Pact of the Blade, Chain or Tome, and others); swap one when you gain a level."; }),
+    luF(1, "Pact Magic", function (x) { return x.pm + " Pact slot" + (x.pm > 1 ? "s" : "") + " of " + ordinal(x.pl) + " level, all back on a short rest. " + luSpellText(x, "Charisma", "Pact Magic"); }),
+    luF(2, "Magical Cunning", function (x) { return "A 1-minute rite, once per long rest: regain up to " + x.cun + " spent Pact slots."; }),
+    luF(3, "Warlock Subclass", "Pick a Warlock subclass; its features come at 3, 6, 10 and 14."),
+    luF(9, "Contact Patron", "Contact Other Plane is always prepared; once per long rest cast it without a slot to reach your patron, and you pass its save."),
+    luF(11, "Mystic Arcanum", "Pick a 6th-level Warlock spell: cast it once per long rest without a slot."),
+    luF(13, "Mystic Arcanum", "Add a 7th-level Warlock spell, once per long rest."),
+    luF(15, "Mystic Arcanum", "Add an 8th-level Warlock spell, once per long rest."),
+    luF(17, "Mystic Arcanum", "Add a 9th-level Warlock spell, once per long rest."),
+    luF(19, "Epic Boon", "Take an Epic Boon feat."),
+    luF(20, "Eldritch Master", "Magical Cunning now regains all your spent Pact slots.")
+  ],
+  resources: function (c, x, sub) {
+    var r = [];
+    if (x.L >= 2) r.push({ key: "cunning", name: "Magical Cunning (regain " + x.cun + " Pact slots)", max: 1, reset: "long" });
+    if (x.L >= 9) r.push({ key: "patron", name: "Contact Patron (free Contact Other Plane)", max: 1, reset: "long" });
+    this.arcana.forEach(function (p) { if (x.L >= p[0]) r.push({ key: "arc" + p[1], name: "Arcanum " + ordinal(p[1]) + " (Mystic Arcanum)", max: 1, reset: "long" }); });
+    if (sub === "fiend" && x.L >= 6) r.push({ key: "darkluck", name: "Dark One's Own Luck (+1d10)", max: x.luck, reset: "long" });
+    if (sub === "fiend" && x.L >= 14) r.push({ key: "hurl", name: "Hurl Through Hell (8d10 psychic)", max: 1, reset: "long" });
+    return r;
+  },
+  actions: function (c, x, sub) {
+    var a = [], L = x.L;
+    if (L >= 2) a.push({ id: "magical-cunning", name: "Magical Cunning", economy: "action", kind: "feature", cost: [{ res: "cunning", n: 1 }], range: "Self (1-minute rite)", notes: "Regain up to " + x.cun + " spent Pact slots: tap them back on the Spells tab." });
+    if (L >= 9) a.push({ id: "contact-patron", name: "Contact Patron", economy: "action", kind: "spell", cost: [{ res: "patron", n: 1 }], range: "Self", notes: "Contact Other Plane without a slot; you automatically pass its save." });
+    this.arcana.forEach(function (p) { if (L >= p[0]) a.push({ id: "arcanum-" + p[1], name: "Mystic Arcanum (" + ordinal(p[1]) + ")", economy: "action", kind: "spell", cost: [{ res: "arc" + p[1], n: 1 }], range: "As the spell", notes: "Your " + ordinal(p[1]) + "-level arcanum spell, once per long rest, no slot. Its casting time may differ from an action." }); });
+    if (sub === "fiend" && L >= 3) a.push({ id: "dark-blessing", name: "Dark One's Blessing", economy: "free", kind: "feature", dmg: "Temp HP " + Math.max(1, x.m.cha + L), range: "When an enemy drops to 0 HP", notes: "One you hit, or one within 10 ft of you." });
+    if (sub === "fiend" && L >= 6) a.push({ id: "dark-luck", name: "Dark One's Own Luck", economy: "free", kind: "feature", cost: [{ res: "darkluck", n: 1 }], dmg: "+1d10", range: "Your ability check or saving throw", notes: "After you see the roll, before the result. Once per roll." });
+    if (sub === "fiend" && L >= 14) a.push({ id: "hurl-through-hell", name: "Hurl Through Hell", economy: "free", kind: "feature", cost: [{ res: "hurl", n: 1 }], once: "turn", req: ["hit"], dc: x.sdc, saveAbility: "Cha", dmg: "8d10 psychic", onFail: "Gone until the end of your next turn: takes the damage (not a Fiend) and is Incapacitated.", onSuccess: "No effect.", range: "The creature you just hit", notes: "Once per long rest; spend a Pact slot to use it again (tap the Pact pip by hand)." });
+    return a;
+  },
+  attackNotes: function (c, x) { return luCastNotes(x, "Charisma") + "Pact Magic: " + x.pm + " slot" + (x.pm > 1 ? "s" : "") + " of " + ordinal(x.pl) + " level, back on a short rest. " + x.inv + " Eldritch Invocations."; }
+};
+
+/* ---------------------------------------- WIZARD (SRD 5.2) ---------------------------------------- */
+LU.wizard = {
+  name: "Wizard", die: 6, asi: [4, 8, 12, 16], boon: 19, subLevel: 3, sa: "int", carry: LU_PICKS,
+  legacy: [/^WIZARD\b/, /^EVOKER\b/, /^SCHOOL OF EVOCATION/],
+  slots: luFull, cantrips: luStep([[1, 3], [4, 4], [10, 5]]),
+  prepared: luStep([[1, 4], [2, 5], [3, 6], [4, 7], [5, 9], [6, 10], [7, 11], [8, 12], [9, 14], [10, 15], [11, 16], [13, 17], [14, 18], [15, 19], [16, 21], [17, 22], [18, 23], [19, 24], [20, 25]]),
+  x: function (c, x) { luCast(x, "int"); x.rec = Math.ceil(x.L / 2); x.cantrips = this.cantrips(x.L); x.prepared = this.prepared(x.L); },
+  subs: {
+    evoker: {
+      name: "Evoker", match: /evoker|evocation/i,
+      feats: [
+        luF(3, "Evocation Savant", "Add two Evocation spells of 2nd level or lower to your spellbook for free, and one more each time you gain a new level of spell slots."),
+        luF(3, "Potent Cantrip", "When a creature succeeds on a save against your damaging cantrip, or your cantrip attack misses, it still takes half the damage (no other effect)."),
+        luF(6, "Sculpt Spells", "When you cast an Evocation spell, up to 1 + its level creatures you choose automatically succeed on its save and take no damage from it."),
+        luF(10, "Empowered Evocation", function (x) { return "Add your Int mod (" + luNum(x.m.int) + ") to one damage roll of any Wizard Evocation spell you cast."; }),
+        luF(14, "Overchannel", "A Wizard spell of 1st to 5th level that deals damage deals maximum damage. The first use each long rest is free; each later use deals you 2d12 necrotic per spell level (1d12 more each time), ignoring resistance.")
+      ]
+    }
+  },
+  feats: [
+    luF(1, "Spellcasting", function (x) { return luSpellText(x, "Full caster with a spellbook", "Intelligence") + " Change them on a long rest."; }),
+    luF(1, "Ritual Adept", "Cast any ritual spell in your spellbook as a ritual without preparing it."),
+    luF(1, "Arcane Recovery", function (x) { return "Once per long rest, on a short rest: recover spell slots totalling up to " + x.rec + " levels (half your Wizard level, rounded up), none 6th level or higher."; }),
+    luF(2, "Scholar", "Expertise in one of Arcana, History, Investigation, Medicine, Nature or Religion."),
+    luF(3, "Wizard Subclass", "Pick a Wizard subclass; its features come at 3, 6, 10 and 14."),
+    luF(5, "Memorize Spell", "On a short rest, swap one prepared spell for another in your spellbook."),
+    luF(18, "Spell Mastery", "Pick a 1st- and a 2nd-level spellbook spell with a casting time of an action: cast them at their lowest level without a slot."),
+    luF(19, "Epic Boon", "Take an Epic Boon feat."),
+    luF(20, "Signature Spells", "Pick two 3rd-level spellbook spells: always prepared, and each can be cast once per short or long rest at 3rd level without a slot.")
+  ],
+  resources: function (c, x, sub) {
+    var r = [{ key: "arcrec", name: "Arcane Recovery (" + x.rec + " slot levels on a short rest)", max: 1, reset: "long" }];
+    if (x.L >= 20) r.push({ key: "signature", name: "Signature Spells (two 3rd-level spells, free)", max: 2, reset: "short" });
+    if (sub === "evoker" && x.L >= 14) r.push({ key: "overchannel", name: "Overchannel (first use free)", max: 1, reset: "long" });
+    return r;
+  },
+  actions: function (c, x, sub) {
+    var a = [], L = x.L;
+    a.push({ id: "arcane-recovery", name: "Arcane Recovery", economy: "free", kind: "feature", cost: [{ res: "arcrec", n: 1 }], range: "On a short rest", notes: "Recover slots totalling up to " + x.rec + " levels (none 6th or higher): tap them back on the Spells tab." });
+    if (L >= 20) a.push({ id: "signature-spell", name: "Signature Spell", economy: "action", kind: "spell", spell: true, cost: [{ res: "signature", n: 1 }], range: "As the spell", notes: "One of your two Signature Spells at 3rd level, no slot. Each once per short or long rest." });
+    if (sub === "evoker" && L >= 14) a.push({ id: "overchannel", name: "Overchannel", economy: "free", kind: "feature", cost: [{ res: "overchannel", n: 1 }], dmg: "Maximum damage", range: "Your damaging Wizard spell, 1st to 5th level", notes: "Free once per long rest. Each later use before a long rest deals you 2d12 necrotic per spell level (1d12 more each time), ignoring resistance." });
+    return a;
+  },
+  attackNotes: function (c, x) { return luCastNotes(x, "Intelligence") + "Arcane Recovery: " + x.rec + " slot levels once per long rest."; }
+};
+
+/* Classes without a rule of their own get the plain defaults. */
+Object.keys(LU).forEach(function (k) {
+  var d = LU[k];
+  d.srd = k !== "artificer";
+  if (!d.speedBonus) d.speedBonus = function () { return 0; };
+  if (!d.apa) d.apa = function () { return 1; };
+  if (!d.saves) d.saves = function () { return []; };
+  if (!d.boost) d.boost = function () { return null; };
+  if (!d.ac) d.ac = function () { return null; };
+  if (!d.resources) d.resources = function () { return []; };
+  if (!d.actions) d.actions = function () { return []; };
+});
+
 /* ---------- Level Up engine (pure) ---------- */
 var LU_AUTO_HEAD = "CLASS FEATURES (Level Up keeps this section current)", LU_AUTO_END = "(end of class features)";
 var LU_COMMON_LEGACY = [/^WHAT'S NEXT/, /^NEXT,? LEVEL/, /^CLASS FEATURES \(Level Up/];
@@ -1384,6 +1978,7 @@ function luClassKey(ch) {
 }
 function luSubKey(ch, def) {
   if (ch.subKey && def.subs[ch.subKey]) return ch.subKey;
+  if (ch.level < def.subLevel) return "";   /* a plan in the class line ("Thief at level 3") is not the subclass yet */
   for (var k in def.subs) if (def.subs.hasOwnProperty(k) && def.subs[k].match.test(String(ch.cls || ""))) return k;
   return "";
 }
@@ -1397,20 +1992,20 @@ function luExtraHp(ch) {
 /* What the next level needs from the player, before anything changes. */
 function levelUpPlan(ch) {
   var ck = luClassKey(ch);
-  if (!ck) return { ok: false, msg: "Level Up knows Monk, Barbarian and Artificer so far. For another class, change the level by hand on the Sheet tab." };
+  if (!ck) return { ok: false, msg: "Level Up knows the 12 Player's Handbook classes and the Artificer. For another class, change the level by hand on the Sheet tab." };
   if (ch.level >= 20) return { ok: false, msg: "Already level 20." };
   var def = LU[ck], to = ch.level + 1, sk = luSubKey(ch, def), named = /^\s*[A-Za-z]+\s+\d+\s*\(([^)]+)\)/.test(String(ch.cls || ""));
   var needs = { asi: def.asi.indexOf(to) >= 0, boon: to === def.boon, sub: null, cantrips: 0, spells: 0, maxLevel: 0 };
   if (!sk && !named && to >= def.subLevel) needs.sub = Object.keys(def.subs).map(function (k) { return { key: k, name: def.subs[k].name }; });
-  if (def.slots) {
+  if (def.cantrips) {
     needs.cantrips = Math.max(0, def.cantrips(to) - def.cantrips(to - 1));
     needs.spells = Math.max(0, def.prepared(to) - def.prepared(to - 1));
-    needs.maxLevel = def.slots(to).length;
+    needs.maxLevel = def.slots ? def.slots(to).length : def.pact(to).level;
   }
   var gains = [], chk = [];
   def.feats.concat(sk ? def.subs[sk].feats : []).forEach(function (f) { if (f.l === to) { gains.push(f.n); if (f.chk) chk.push(f.n); } });
   var x = luCtx(ch, to); x.ch = ch; def.x(ch, x);
-  var hpBase = luAvg(def.die) + abilityMod(ch.abilities.con) + luExtraHp(ch);
+  var hpBase = luAvg(def.die) + abilityMod(ch.abilities.con) + luExtraHp(ch) + (sk && def.subs[sk].hp ? def.subs[sk].hp : 0);
   return { ok: true, ck: ck, def: def, from: ch.level, to: to, needs: needs, choice: needs.asi || needs.boon || !!needs.sub || needs.cantrips > 0 || needs.spells > 0, gains: gains, chk: chk, hpAvg: luAvg(def.die), hpEstimate: Math.max(1, hpBase), die: def.die, className: def.name };
 }
 
@@ -1539,7 +2134,7 @@ function luSpliceFeatures(c, def, block) {
     var head = s.split("\n")[0];
     if (pats.some(function (r) { return r.test(head); })) {
       if (at < 0) at = keep.length;
-      if (def.legacy.some(function (r) { return r.test(head); })) s.split("\n").forEach(function (l) { if (/Ability Score Improvement|chosen:/i.test(l)) carry.push(l.trim()); });
+      if (def.legacy.some(function (r) { return r.test(head); })) s.split("\n").forEach(function (l) { if (/Ability Score Improvement|chosen:/i.test(l) || (def.carry && def.carry.test(l.trim()))) carry.push(l.trim()); });
     } else keep.push(s);
   });
   if (carry.length) {
@@ -1601,16 +2196,18 @@ function levelUp(ch, picks) {
   var bst = def.boost(to);
   if (bst) { bst.abils.forEach(function (ab) { c.abilities[ab] = Math.min(bst.cap, c.abilities[ab] + bst.n); }); lines.push(bst.name + ": +" + bst.n + " " + bst.abils.map(function (z) { return ABIL_NAMES[z]; }).join(" and +" + bst.n + " ") + " (max " + bst.cap + ").") ; }
   def.saves(to).forEach(function (ab) { c.saveProf[ab] = true; });
-  if (def.slots && !c.spellAbility) c.spellAbility = "int";
+  if ((def.slots || def.pact) && !c.spellAbility) c.spellAbility = def.sa || "int";
   var sk = luSubKey(c, def), x = luCtx(c, to); x.ch = c; def.x(c, x);
-  /* hit points: fixed average by default, or what was rolled; Con changes count for every level */
+  /* hit points: fixed average by default, or what was rolled; Con changes count for every level.
+     A subclass that adds HP per level (Draconic Resilience) also counts the earlier levels when it is picked. */
   var extra = luExtraHp(c); c.hpPerLevel = extra;
+  var shp = sk && def.subs[sk].hp ? def.subs[sk].hp : 0, sret = picks.sub && shp ? shp * (to - 1) : 0;
   var rolled = picks.hpRoll != null && picks.hpRoll !== "", base = rolled ? toInt(picks.hpRoll, 1) : luAvg(die);
-  var gain = Math.max(1, base + x.m.con + extra), retro = (x.m.con - oldX.m.con) * (to - 1), tot = gain + retro;
+  var gain = Math.max(1, base + x.m.con + extra + shp), retro = (x.m.con - oldX.m.con) * (to - 1) + sret, tot = gain + retro;
   c.hp.max = Math.max(1, c.hp.max + tot); c.hp.cur = Math.max(0, c.hp.cur + tot);
   var hd = null; c.hitDice.forEach(function (h) { if (!hd && h.die === die) hd = h; });
   if (hd) hd.total = Math.min(20, hd.total + 1); else c.hitDice.push({ die: die, total: 1, used: 0 });
-  lines.unshift("HP +" + tot + " (" + (rolled ? "rolled " + base : "average " + base) + (x.m.con ? ", Con " + fmtSigned(x.m.con) : "") + (extra ? ", +" + extra + " species or feat" : "") + (retro ? ", " + fmtSigned(retro) + " from Con" : "") + "). Max HP " + c.hp.max + ". Hit dice: " + (hd ? hd.total : 1) + "d" + die + ".");
+  lines.unshift("HP +" + tot + " (" + (rolled ? "rolled " + base : "average " + base) + (x.m.con ? ", Con " + fmtSigned(x.m.con) : "") + (extra ? ", +" + extra + " species or feat" : "") + (shp ? ", +" + (shp + sret) + " subclass" : "") + (retro - sret ? ", " + fmtSigned(retro - sret) + " from Con" : "") + "). Max HP " + c.hp.max + ". Hit dice: " + (hd ? hd.total : 1) + "d" + die + ".");
   if (x.pb !== oldX.pb) lines.push("Proficiency bonus +" + x.pb + ".");
   /* armor class and speed that follow a class rule */
   var f0 = def.ac(old, oldX);
@@ -1624,8 +2221,8 @@ function levelUp(ch, picks) {
   c.resources.forEach(function (r) { beforeMax[r.key] = r.max; beforeName[r.key] = r.name; });
   rdefs.forEach(function (d) {
     var r = findRes(c, d.key), nm = String(d.name).slice(0, 80);
-    if (r) { r.name = nm; r.max = clamp(d.max, 0, 99); r.reset = d.reset; if (d.shortBack) r.shortBack = d.shortBack; r.used = clamp(r.used, 0, r.max); }
-    else c.resources.push({ name: nm, key: d.key, shortBack: d.shortBack || 0, max: clamp(d.max, 0, 99), used: 0, reset: d.reset });
+    if (r) { r.name = nm; r.max = clamp(d.max, 0, 999); r.reset = d.reset; if (d.shortBack) r.shortBack = d.shortBack; r.used = clamp(r.used, 0, r.max); }
+    else c.resources.push({ name: nm, key: d.key, shortBack: d.shortBack || 0, max: clamp(d.max, 0, 999), used: 0, reset: d.reset });
   });
   rdefs.forEach(function (d) {
     var b = beforeMax[d.key], nm = String(d.name).replace(/\s*\(.*$/, ""), oldName = beforeName[d.key] || "";
@@ -1633,14 +2230,23 @@ function levelUp(ch, picks) {
     else if (b !== d.max) lines.push(nm + " " + b + " -> " + d.max + ".");
     else if (oldName && oldName !== String(d.name).slice(0, 80) && /damage/.test(d.name)) lines.push(nm + " now " + String(d.name).replace(/^[^(]*/, "").trim() + ".");
   });
-  if (def.slots) {
-    var tbl = def.slots(to), before = luSlotsText(c);
-    for (var i = 0; i < 9; i++) { var mx = tbl[i] || 0; c.slots[i].max = mx; c.slots[i].used = Math.min(c.slots[i].used, mx); }
-    if (luSlotsText(c) !== before) lines.push("Spell slots: " + luSlotsText(c) + ".");
-    else lines.push("Spell slots stay " + luSlotsText(c) + ".");
+  (def.track || []).forEach(function (tk) { if (x[tk[1]] !== oldX[tk[1]]) lines.push(tk[0] + ": " + oldX[tk[1]] + " -> " + x[tk[1]] + "."); });
+  if (def.slots || def.pact) {
+    if (def.slots) {
+      var tbl = def.slots(to), before = luSlotsText(c);
+      for (var i = 0; i < 9; i++) { var mx = tbl[i] || 0; c.slots[i].max = mx; c.slots[i].used = Math.min(c.slots[i].used, mx); }
+      if (luSlotsText(c) !== before) lines.push("Spell slots: " + luSlotsText(c) + ".");
+      else lines.push("Spell slots stay " + luSlotsText(c) + ".");
+    }
+    if (def.pact) {
+      var pk = def.pact(to), pWas = c.pact.max + "@" + c.pact.level;
+      c.pact.max = pk.max; c.pact.level = pk.level; c.pact.used = Math.min(c.pact.used, pk.max);
+      lines.push((pWas !== pk.max + "@" + pk.level ? "Pact slots: " : "Pact slots stay ") + pk.max + " of " + ordinal(pk.level) + " level.");
+    }
     if (x.plans !== oldX.plans || x.mitems !== oldX.mitems) lines.push("Replicate Magic Item: " + x.plans + " plans known, " + x.mitems + " running [check book].");
-    if (x.prepared !== oldX.prepared) lines.push("Prepared spells: " + oldX.prepared + " -> " + x.prepared + " [check book].");
-    if (x.cantrips !== oldX.cantrips) lines.push("Cantrips known: " + oldX.cantrips + " -> " + x.cantrips + " [check book].");
+    var ck2 = def.srd ? "" : " [check book]";   /* SRD classes: the counts come from the SRD class table */
+    if (x.prepared !== oldX.prepared) lines.push("Prepared spells: " + oldX.prepared + " -> " + x.prepared + ck2 + ".");
+    if (x.cantrips !== oldX.cantrips) lines.push("Cantrips known: " + oldX.cantrips + " -> " + x.cantrips + ck2 + ".");
     if (sk && def.subs[sk].spells) {
       Object.keys(def.subs[sk].spells).forEach(function (lv) {
         if (+lv > to) return;
@@ -2140,7 +2746,7 @@ if (typeof module !== "undefined" && module.exports) {
       if (!u.rolled) h += '<div class="row">' + '<label class="fld grow" for="lv-roll"><span class="lab">Rolled d' + u.die + " for HP instead?</span>" + '<input id="lv-roll" type="number" inputmode="numeric" min="1" max="' + u.die + '" autocomplete="off" placeholder="1 to ' + u.die + '"></label>' + btn("lvroll", "Use my roll", "", "sm") + "</div>";
       h += '<div class="row">' + btn("lvundo", "Undo level up", "", "wide") + "</div></div>";
     }
-    h += '<p class="hint">Monk and Barbarian follow the SRD 5.2 (CC-BY-4.0, Wizards of the Coast). Path of the Wild Heart and Artificer are not in the SRD (own-words summaries only); numbers marked [check book] should be checked against your book.</p>';
+    h += '<p class="hint">Monk and Barbarian follow the SRD 5.2 (CC-BY-4.0, Wizards of the Coast), and so do Bard, Cleric, Druid, Fighter, Paladin, Ranger, Rogue, Sorcerer, Warlock and Wizard with their SRD subclasses (short paraphrases). Path of the Wild Heart and Artificer are not in the SRD (own-words summaries only); numbers marked [check book] should be checked against your book.</p>';
     return sec("Level up", h);
   }
   function lvSet(k, v) {

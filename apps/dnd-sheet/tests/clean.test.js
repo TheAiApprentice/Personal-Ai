@@ -50,21 +50,55 @@ t("2024 rules are the default for a blank character and for an imported file wit
   assert.strictEqual(r.character.edition, "2024");
 });
 
-t("level up: a brand-new Monk, Barbarian and Artificer each go 1 -> 20 with the class table, subclass asked at 3", () => {
-  [MONK, BARB, ARTI].forEach(([cls, ab, die]) => {
+const ALL = [BARB,
+  ["Bard", { str: 8, dex: 14, con: 14, int: 10, wis: 12, cha: 16 }, 8], ["Cleric", { str: 12, dex: 10, con: 14, int: 10, wis: 16, cha: 12 }, 8],
+  ["Druid", { str: 8, dex: 14, con: 14, int: 12, wis: 16, cha: 10 }, 8], ["Fighter", { str: 16, dex: 14, con: 15, int: 10, wis: 12, cha: 8 }, 10], MONK,
+  ["Paladin", { str: 16, dex: 10, con: 14, int: 8, wis: 12, cha: 15 }, 10], ["Ranger", { str: 10, dex: 16, con: 14, int: 10, wis: 14, cha: 8 }, 10],
+  ["Rogue", { str: 8, dex: 16, con: 14, int: 12, wis: 14, cha: 10 }, 8], ["Sorcerer", { str: 8, dex: 14, con: 15, int: 10, wis: 12, cha: 16 }, 6],
+  ["Warlock", { str: 8, dex: 14, con: 15, int: 10, wis: 12, cha: 16 }, 8], ["Wizard", { str: 8, dex: 14, con: 15, int: 16, wis: 12, cha: 10 }, 6], ARTI];
+const ASI_AT = { Fighter: [4, 6, 8, 12, 14, 16], Rogue: [4, 8, 10, 12, 16] };
+
+t("level up: a brand-new character of every class (the 12 Player's Handbook classes and the Artificer) goes 1 -> 20, subclass asked at 3", () => {
+  assert.strictEqual(Object.keys(P.LU).length, 13); assert.strictEqual(ALL.length, 13);
+  ALL.forEach(([cls, ab, die]) => {
     let c = fresh(cls, ab, die);
+    const asiAt = ASI_AT[cls] || [4, 8, 12, 16];
     while (c.level < 20) {
-      const plan = P.levelUpPlan(c);
-      if (c.level === 2) assert.ok(plan.needs.sub && plan.needs.sub.length >= 1, cls + ": subclass asked for at 3");
+      const plan = P.levelUpPlan(c), to = c.level + 1;
+      assert.ok(plan.ok, cls + ": " + plan.msg);
+      assert.strictEqual(!!plan.needs.sub, to === 3, cls + ": subclass asked for at 3 only");
+      assert.strictEqual(plan.needs.asi, asiAt.indexOf(to) >= 0, cls + ": ASI at " + to);
+      assert.strictEqual(plan.needs.boon, to === 19, cls + ": Epic Boon at 19");
       const before = c; c = up(c).ch;
       assert.strictEqual(c.level, before.level + 1); assert.ok(c.hp.max > before.hp.max, cls + " HP grows");
       assert.strictEqual(c.hitDice.reduce((a, h) => a + h.total, 0), c.level, cls + " hit dice follow level");
+      c.actions.forEach((a) => a.cost.forEach((k) => { if (k.res) assert.ok(P.findRes(c, k.res), cls + " " + a.id + " costs a missing resource"); }));
       assert.deepStrictEqual(P.sanitizeCharacter(JSON.parse(JSON.stringify(c))), c, cls + " survives a save at " + c.level);
     }
     assert.ok(!P.levelUp(c, {}).ok, "nothing past 20");
+    const slots = c.slots.map((s) => s.max).join("");
+    if (["Bard", "Cleric", "Druid", "Sorcerer", "Wizard"].indexOf(cls) >= 0) assert.strictEqual(slots, "433332211", cls + " full-caster slots");
+    if (["Paladin", "Ranger", "Artificer"].indexOf(cls) >= 0) assert.strictEqual(slots, "433320000", cls + " half-caster slots");
+    if (cls === "Warlock") assert.deepStrictEqual([c.pact.max, c.pact.level], [4, 5], "Pact Magic at 20");
+    if (cls === "Fighter") assert.strictEqual(c.attacksPerAction, 4);
   });
-  const f = P.levelUp(P.sanitizeCharacter({ name: "F", cls: "Fighter 5", level: 5 }), {});
-  assert.ok(!f.ok && /Monk, Barbarian and Artificer/.test(f.msg), "other classes are not guessed");
+  const f = P.levelUp(P.sanitizeCharacter({ name: "F", cls: "Blood Hunter 5", level: 5 }), {});
+  assert.ok(!f.ok && /12 Player's Handbook classes and the Artificer/.test(f.msg), "other classes are not guessed");
+});
+
+t("the new classes fill the resource bar and the one-tap buttons, and rests bring them back", () => {
+  const climb = (row, L) => { let c = fresh(...row); while (c.level < L) c = up(c).ch; return c; };
+  const get = (cls) => ALL.find((r) => r[0] === cls);
+  const f2 = climb(get("Fighter"), 2); assert.strictEqual(bar(f2)["res-sw"], "Second Wind 2/2"); assert.strictEqual(bar(f2)["res-surge"], "Action Surge 1/1");
+  const sw = P.tapAction(f2, P.blankTurn(), act(f2, "second-wind"), {}); assert.ok(sw.ok); assert.strictEqual(bar(P.shortRest(sw.ch))["res-sw"], "Second Wind 2/2");
+  assert.strictEqual(act(climb(get("Rogue"), 5), "sneak-attack").dmg.indexOf("+3d6"), 0); act(climb(get("Rogue"), 2), "cunning-action");
+  assert.strictEqual(bar(climb(get("Cleric"), 2))["res-cd"], "Channel Divinity 2/2"); act(climb(get("Cleric"), 2), "divine-spark");
+  assert.strictEqual(bar(climb(get("Bard"), 2))["res-bardic"], "Bardic Inspiration 3/3");
+  assert.strictEqual(bar(climb(get("Druid"), 2))["res-wildshape"], "Wild Shape 2/2");
+  assert.strictEqual(bar(climb(get("Sorcerer"), 2))["res-sp"], "SP 2/2");
+  const p2 = climb(get("Paladin"), 2); assert.strictEqual(bar(p2)["res-loh"], "Lay on Hands 10/10"); assert.strictEqual(bar(p2)["slot-1"], "1st 2/2");
+  const w2 = climb(get("Warlock"), 2); assert.strictEqual(bar(w2).pact, "Pact 2/2");
+  const sp = P.spendPact(w2); assert.strictEqual(bar(sp).pact, "Pact 1/2"); assert.strictEqual(bar(P.shortRest(sp)).pact, "Pact 2/2");
 });
 
 t("level up fills the resource bar and the one-tap buttons; undo puts the sheet back exactly", () => {
